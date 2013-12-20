@@ -7,8 +7,8 @@ from datetime import datetime
 
 
 sys.path.append("Public"); # Gave up trying to work how to do this with a .pth file or using .
-sys.path.append("/Users/gkirk/Dropbox/git/jcmbsoft/multi/DCOL/")
-sys.path.append("/Users/gkirk/Dropbox/git/jcmbsoft/multi/DCOL/Public")
+sys.path.append("/Users/gkirk/Dropbox/git/DCOL/")
+sys.path.append("/Users/gkirk/Dropbox/git/DCOL/Public")
 sys.path.append("/Users/gkirk/Dropbox/Develop/Python/DCOL/Internal")
 sys.path.append("internal");
 sys.path.append("internal_stubs");
