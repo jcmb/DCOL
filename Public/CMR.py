@@ -73,13 +73,16 @@ class CMR (DCOL.Dcol) :
       self.station_ID=unpacked[0] & 0x1F
       self.message_type=unpacked[1]>>5
 
-      self.CMR=self.message_type==0
+      self.CMR=self.message_type==0 or self.message_type==1 or self.message_type==2
       self.MB=self.message_type==4
       self.CMRx=self.version_number==5
+      if self.CMRx:
+         self.CMR=False
       self.Dummy=self.message_type==7
       self.Flags=unpacked[1] & 0x1F
 
       if (self.message_type == 1) or (self.message_type == 2) :
+         return DCOL.Got_Packet
          self.decode_type_1_2_header(data)
          return self.decode_type_1(data)
       else :
