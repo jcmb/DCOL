@@ -285,6 +285,7 @@ class Dcol:
         self._add_Handler(BreakRET_TrimComm_Command,RetBreak.RetBreak());
         self._add_Handler(COMMOUT_TrimComm_Command,CommOut.CommOut());
         self._add_Handler(SetIdle_TrimComm_Command,SetIdle.SetIdle())
+        self._add_Handler(AppFile_TrimComm_Command,AppFile.AppFile())
 
 
         if internal :
@@ -394,3 +395,4 @@ import RetSVData
 import RTKCtrl
 import KNEX
 import ReqAppFile
+import AppFile
