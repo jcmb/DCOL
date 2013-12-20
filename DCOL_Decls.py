@@ -64,6 +64,7 @@ SETCOMMS_TrimComm_Command  = 0x48; #SETCOMMS}
 COMMOUT_TrimComm_Command   = 0x49;
 SetIdle_TrimComm_Command   = 0x4F;
 
+AppFile_TrimComm_Command   = 0x64;
 
 BreakRET_TrimComm_Command  = 0x6E;
 BreakReq_TrimComm_Command  = 0x6F;
