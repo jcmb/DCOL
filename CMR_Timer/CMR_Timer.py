@@ -105,31 +105,31 @@ while (new_data):
 #         print "Got Packet: {:X}".format(dcol.packet_ID)
          if Time_CMRPlus and dcol.packet_ID == CMR_PLUS_TrimComm_Command:
             if last_time:
-               print "{:X},{},{},{}".format(dcol.packet_ID,dcol.Packet_Data_Length,(now-last_time).total_seconds(),now)
+               print "CMR+,{:X},{},{},{},{}".format(dcol.packet_ID,dcol.message_type,dcol.Packet_Data_Length+6,(now-last_time).total_seconds(),now)
             last_time = now
 
          if Time_CMR and dcol.packet_ID == CMR_Type_TrimComm_Command:
             if dcol.Handlers[CMR_Type_TrimComm_Command].CMR:
                if last_time:
-                  print "{:X},{},{},{}".format(dcol.packet_ID,dcol.Packet_Data_Length,(now-last_time).total_seconds(),now)
+                  print "CMR,{:X},{},{},{},{}".format(dcol.packet_ID,dcol.Handlers[CMR_Type_TrimComm_Command].message_type,dcol.Packet_Data_Length+6,(now-last_time).total_seconds(),now)
                last_time = now
 
          if Time_CMRx and dcol.packet_ID == CMR_Type_TrimComm_Command:
             if dcol.Handlers[CMR_Type_TrimComm_Command].CMRx:
                if last_time:
-                  print "{:X},{},{},{}".format(dcol.packet_ID,dcol.Packet_Data_Length,(now-last_time).total_seconds(),now)
+                  print "CMRx,{:X},{},{},{},{}".format(dcol.packet_ID,dcol.Handlers[CMR_Type_TrimComm_Command].message_type,dcol.Packet_Data_Length+6,(now-last_time).total_seconds(),now)
                last_time = now
 
          if Time_MB and dcol.packet_ID == CMR_Type_TrimComm_Command:
 #            dcol.Handlers[CMR_Type_TrimComm_Command].dump(4)
             if (dcol.Handlers[CMR_Type_TrimComm_Command].MB) or (dcol.Handlers[CMR_Type_TrimComm_Command].CMR):
                if last_time:
-                  print "{:X},{},{},{}".format(dcol.packet_ID,dcol.Packet_Data_Length,(now-last_time).total_seconds(),now)
+                  print "MB,{:X},{},{},{},{}".format(dcol.packet_ID,dcol.Handlers[CMR_Type_TrimComm_Command].message_type,dcol.Packet_Data_Length+6,(now-last_time).total_seconds(),now)
                last_time = now
 
          sys.stdout.flush()
       result = dcol.process_data ()
-   #        print "processed: " + str(result)
+#      print "processed: " + str(result)
    new_data = sys.stdin.read(1)
 
 print "Bye"
