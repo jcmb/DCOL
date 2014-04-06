@@ -180,12 +180,12 @@ class GSOF (DCOL.Dcol) :
                         self.Local_Height=unpacked[3]
 
                     elif subrecord == GSOF_LOCAL_ZONE_POSITION :
-                        unpacked=unpack_from('> 8S d d d',str(self.GSOF_Buffer))
+                        unpacked=unpack_from('> 8s 8s d d d',str(self.GSOF_Buffer))
                         self.Datum_ID=unpacked[0]
                         self.Zone_ID=unpacked[1]
-                        self.Local_Lat=unpacked[2]
-                        self.Local_Long=unpacked[3]
-                        self.Local_Height=unpacked[4]
+                        self.Local_North=unpacked[2]
+                        self.Local_East=unpacked[3]
+                        self.Local_Elev=unpacked[4]
 
                     elif subrecord == GSOF_ECEF_DELTA :
                         unpacked=unpack_from('>d d d',str(self.GSOF_Buffer))
@@ -481,12 +481,12 @@ class GSOF (DCOL.Dcol) :
                         );
 
                     if subrecord == GSOF_LOCAL_ZONE_POSITION :
-                        print "  Zone D: {}  Datum ID: {}  Lat: {:0.8f}  Long: {:0.8f}  Height: {:0.3f}".format(
+                        print "  Zone D: {}  Datum ID: {}  North: {:0.3f}  East: {:0.3f}  Elev: {:0.3f}".format(
                         self.Zone_ID,
                         self.Datum_ID,
-                        self.Local_Lat,
-                        self.Local_Long,
-                        self.Local_Height
+                        self.Local_North,
+                        self.Local_East,
+                        self.Local_Elev
                         )
 
                     if subrecord == GSOF_ECEF_DELTA :
