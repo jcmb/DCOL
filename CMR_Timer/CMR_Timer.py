@@ -6,9 +6,9 @@ import pprint
 
 
 sys.path.append("Public"); # Gave up trying to work how to do this with a .pth file or using .
-sys.path.append("/Users/gkirk/Dropbox/git/jcmbsoft/multi/DCOL/")
-sys.path.append("/Users/gkirk/Dropbox/git/jcmbsoft/multi/DCOL/Public")
-sys.path.append("/Users/gkirk/Dropbox/git/internal")
+sys.path.append("/Users/gkirk/Dropbox/git/DCOL/")
+sys.path.append("/Users/gkirk/Dropbox/git/DCOL/Public")
+sys.path.append("/Users/gkirk/Dropbox/Develop/python/DCOL/internal")
 sys.path.append("internal");
 sys.path.append("internal_stubs");
 
@@ -98,17 +98,23 @@ while (new_data):
    result = dcol.process_data (dump_decoded=False)
 
    while result != 0 :
-   #        print str(datetime.now())
+#        print str(datetime.now())
 #      print result
       if result == Got_Packet :
          now=datetime.utcnow()
 #         print "Got Packet: {:X}".format(dcol.packet_ID)
-         if Time_CMRPlus and dcol.packet_ID == CMR_PLUS_TrimComm_Command:
+
+         if (Time_CMR or Time_MB) and dcol.packet_ID == CMRW_TrimComm_Command:
             if last_time:
-               print "CMR+,{:X},{},{},{},{}".format(dcol.packet_ID,dcol.message_type,dcol.Packet_Data_Length+6,(now-last_time).total_seconds(),now)
+               print "CMRG,{:X},{},{},{},{}".format(dcol.packet_ID,0,dcol.Packet_Data_Length+6,(now-last_time).total_seconds(),now)
             last_time = now
 
-         if Time_CMR and dcol.packet_ID == CMR_Type_TrimComm_Command:
+         if Time_CMRPlus and dcol.packet_ID == CMR_PLUS_TrimComm_Command:
+            if last_time:
+               print "CMR+,{:X},{},{},{},{}".format(dcol.packet_ID,5,dcol.Packet_Data_Length+6,(now-last_time).total_seconds(),now)
+            last_time = now
+
+         if (Time_CMR or Time_CMRPlus) and dcol.packet_ID == CMR_Type_TrimComm_Command:
             if dcol.Handlers[CMR_Type_TrimComm_Command].CMR:
                if last_time:
                   print "CMR,{:X},{},{},{},{}".format(dcol.packet_ID,dcol.Handlers[CMR_Type_TrimComm_Command].message_type,dcol.Packet_Data_Length+6,(now-last_time).total_seconds(),now)
