@@ -4,6 +4,7 @@ import sys
 import argparse
 import pprint
 from datetime import datetime
+import socket
 
 
 sys.path.append("Public"); # Gave up trying to work how to do this with a .pth file or using .
@@ -41,7 +42,7 @@ class ArgParser(argparse.ArgumentParser):
 parser = ArgParser(
             description='Trimble Data Collector (DCOL) packet decoder',
             fromfile_prefix_chars='@',
-            epilog="(c) JCMBsoft 2013")
+            epilog="(c) JCMBsoft 2013-2014")
 
 parser.add_argument("-A", "--ACK", action="store_true", help="Displays ACK/NACK replies")
 parser.add_argument("-U", "--Undecoded", action="store_true", help="Displays Undecoded Packets")
@@ -56,6 +57,8 @@ parser.add_argument("-V", "--Verbose", nargs='+', help="Packets that should be d
 parser.add_argument("-E", "--Explain", action="store_true", help="System Should Explain what is is doing, AKA Verbose")
 parser.add_argument("-G", "--GNSS", action="store_true", help="Data is from a GNSS Debug Traffic Stream. There are two bytes in front of each Packet")
 parser.add_argument("-W", "--Time", action="store_true", help="Report the time when the packet was received")
+parser.add_argument("-P", "--IP", nargs=2, help="Server Port. Connect via TCP To a device instead of reading from StdIn,")
+parser.add_argument("-R", "--Raw", nargs=1, help="File to Log Raw Data to")
 
 args=parser.parse_args()
 
@@ -119,9 +122,31 @@ if args.GNSS:
 
 #with open ('DCOL.bin','rb') as input_file:
 #   new_data = bytearray(input_file.read(255))
-new_data = bytearray(sys.stdin.read(1))
-while (new_data):
 
+
+#print args.IP
+if args.IP == None:
+    print "Using Standard Input"
+    Use_TCP=False
+    new_data = bytearray(sys.stdin.read(1))
+else:
+    print "Using TCP"
+    Use_TCP=True
+    HOST = args.IP[0]
+    PORT = int(args.IP[1])
+    Remote_TCP = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    Remote_TCP.connect((HOST, PORT))
+    new_data = Remote_TCP.recv(1)
+
+Log_Raw=False
+
+if args.Raw:
+    Log_Raw=True
+    Raw_File=open(args.Raw[0]+".BIN","wb")
+
+while (new_data):
+    if Log_Raw:
+        Raw_File.write(new_data)
     dcol.add_data (data=new_data)
 #    new_data = input_file.read(255)
 #    if len(dcol.buffer):
@@ -163,7 +188,15 @@ while (new_data):
 #        print "processing"
         result = dcol.process_data ()
 #        print "processed: " + str(result)
-    new_data = sys.stdin.read(1)
+    if Use_TCP:
+        new_data = Remote_TCP.recv(1)
+    else:
+        new_data = sys.stdin.read(1)
 
+if Use_TCP:
+    Remote_TCP.close()
+
+if Log_Raw:
+    Raw_File.close()
 print "Bye"
 
