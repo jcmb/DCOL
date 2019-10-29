@@ -195,6 +195,10 @@ Non_Reply_Commands = set ([
     CMR_PLUS_TrimComm_Command
     ])
 
-
-from DCOL_Internal import *
+try:
+   from DCOL_Internal import *
+except:
+#   import sys
+#   sys.stderr.write("Note: Trimble Internal Not available")
+   pass
 
