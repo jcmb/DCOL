@@ -8,9 +8,9 @@ import socket
 
 
 sys.path.append("Public"); # Gave up trying to work how to do this with a .pth file or using .
-sys.path.append("/Users/gkirk/Dropbox/git/DCOL/")
-sys.path.append("/Users/gkirk/Dropbox/git/DCOL/Public")
 sys.path.append("/Users/gkirk/Dropbox/Develop/Python/DCOL/Internal")
+sys.path.append("/Users/gkirk/Documents/GitHub/DCOL")
+sys.path.append("/Users/gkirk/Documents/GitHub/DCOL/Public")
 sys.path.append("internal");
 sys.path.append("internal_stubs");
 
