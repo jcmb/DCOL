@@ -1,3 +1,4 @@
+# Run Decode_Decode.py
 """
 DCOL:
 
@@ -285,7 +286,7 @@ class Dcol:
         self._add_Handler(BreakRET_TrimComm_Command,RetBreak.RetBreak());
         self._add_Handler(COMMOUT_TrimComm_Command,CommOut.CommOut());
         self._add_Handler(SetIdle_TrimComm_Command,SetIdle.SetIdle())
-        self._add_Handler(AppFile_TrimComm_Command,AppFile.AppFile())
+#        self._add_Handler(AppFile_TrimComm_Command,AppFile.AppFile())
 
 
         if internal :
@@ -320,7 +321,7 @@ class Dcol:
         if self.Dump_Levels[self.packet_ID] :
             if dump_timestamp :
                print datetime.now()
-            print self.name() + ' ( ' +  hex(self.packet_ID) +" ) : "
+            print self.name() + ' ( ' +  hex(self.packet_ID) +" ) " + " Length " + str(len(self.packet))+": "
 
             if dump_status:
                 if (self.Dump_Levels[self.packet_ID] > Dump_ID) and (not (self.packet_ID in Non_Reply_Commands)) :
@@ -355,7 +356,7 @@ class Dcol:
 
                     print ""
                 else :
-                    print " Dont have a decoder for packet: " + hex (self.packet_ID)
+                    print " Dont have a decoder for packet: " + hex (self.packet_ID) + " Length " + str(len(self.packet))
                     if dump_undecoded :
                         print " Packet Data: " + ByteToHex (self.packet)
                     print ""
@@ -395,4 +396,4 @@ import RetSVData
 import RTKCtrl
 import KNEX
 import ReqAppFile
-import AppFile
+#import AppFile
