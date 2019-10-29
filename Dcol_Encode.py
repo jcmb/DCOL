@@ -19,7 +19,7 @@ class Dcol_Encode:
         if len(data):
             for b in data :
                 packet.append(b)
-#                print "packet"
+#                print "packet",
 #                print hexlify(packet)
 
         Checksum = 0;
@@ -34,3 +34,9 @@ class Dcol_Encode:
 
         return packet
 
+if __name__ == "__main__":
+   import sys
+   Encode=Dcol_Encode()
+
+#   print hexlify(Encode.encode(int(sys.argv[1],16),sys.argv[2]))
+   print (Encode.encode(int(sys.argv[1],16),sys.argv[2]))
