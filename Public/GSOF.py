@@ -201,12 +201,20 @@ class GSOF (DCOL.Dcol) :
 
 
                     elif subrecord == GSOF_VELOCITY_DATA :
-                        unpacked=unpack_from('>B f f f f',str(self.GSOF_Buffer))
-                        self.Velocity_Flags=unpacked[0]
-                        self.Velocity=unpacked[1]
-                        self.Heading=unpacked[2]
-                        self.Vertical_Velocity=unpacked[3]
-                        self.Local_Heading=unpacked[4]
+                        if length == 0x11 :
+                           unpacked=unpack_from('>B f f f f',str(self.GSOF_Buffer))
+                           self.Velocity_Flags=unpacked[0]
+                           self.Velocity=unpacked[1]
+                           self.Heading=unpacked[2]
+                           self.Vertical_Velocity=unpacked[3]
+                           self.Local_Heading=unpacked[4]
+                        else:
+                           unpacked=unpack_from('>B f f f',str(self.GSOF_Buffer))
+                           self.Velocity_Flags=unpacked[0]
+                           self.Velocity=unpacked[1]
+                           self.Heading=unpacked[2]
+                           self.Vertical_Velocity=unpacked[3]
+                           self.Local_Heading=None
 
                     elif subrecord == GSOF_PDOP_INFO :
                         unpacked=unpack_from('>f f f f',str(self.GSOF_Buffer))
@@ -504,14 +512,33 @@ class GSOF (DCOL.Dcol) :
                         )
 
                     if subrecord == GSOF_VELOCITY_DATA :
-                        print "  Heading: {:0.6f}  Velocity: {:0.4f}  Vertical_Velocity: {:0.4f}  Local_Heading: {:0.6f}\n  Heading Valid: {}  Computed: {}".format(
-                        math.degrees(self.Heading),
-                        self.Velocity,
-                        self.Vertical_Velocity,
-                        self.Local_Heading,
-                        self.Velocity_Flags & Bit0 !=0,
-                        self.Velocity_Flags & Bit1 !=0
-                        );
+                        Velocity_Valid = self.Velocity_Flags & Bit0 !=0
+
+                        if self.Velocity_Flags & Bit1 !=0:
+                           Velocity_Computed="Measurements"
+                        else:
+                           Velocity_Computed="Doppler"
+
+                        if self.Local_Heading :
+                           print "  Heading: {:0.6f}  Velocity: {:0.4f}  Vertical_Velocity: {:0.4f}  Local_Heading: {:0.6f}\n  Velocity Valid: {:s}  Computed: {:s}".format(
+                           math.degrees(self.Heading),
+                           self.Velocity,
+                           self.Vertical_Velocity,
+                           self.Local_Heading,
+                           str(Velocity_Valid),
+                           str(Velocity_Computed)
+                           );
+                        else:
+                           print "  Heading: {:0.6f}  Velocity: {:0.4f}  Vertical_Velocity: {:0.4f}\n  Velocity Valid: {:s}  Computed: {:s}".format(
+                           math.degrees(self.Heading),
+                           self.Velocity,
+                           self.Vertical_Velocity,
+                           str(Velocity_Valid),
+                           str(Velocity_Computed)
+                           );
+
+
+
 
                     if subrecord == GSOF_PDOP_INFO :
                         print "  PDOP: {:0.1f}  HDOP: {:0.1f}  TDOP: {:0.1f}  VDOP: {:0.1f}".format(
