@@ -19,7 +19,11 @@ from DCOL import *
 from DCOL_Decls import *
 import sys
 from datetime import datetime
-from JCMBSoftPyLib import GPS_TIME
+
+try:
+   from JCMBSoftPyLib import GPS_TIME
+except:
+   print ("JCMBSoftPyLib is not installed. Download and install from https://github.com/jcmb/JCMBSoftPyLib.git")
 
 GPS_Offset=18
 
