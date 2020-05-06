@@ -72,6 +72,7 @@ BreakReq_TrimComm_Command  = 0x6F;
 CMR_Type_TrimComm_Command  = 0x93;
 CMR_PLUS_TrimComm_Command  = 0x94;
 
+CMRW_TrimComm_Command      = 0x98;
 
 
 TSV_System_Names = (
