@@ -148,34 +148,34 @@ class CommOut (DCOL.Dcol) :
         display_epoch=True
 
         if Dump_Level >= Dump_Summary :
-            print " Port: {}  Name: {}".format(self.Port_Number, TPort_Names[self.Port_Number-1])
-            print " Message Type: {}  Name : {}".format (self.Message_Type,TMessage_Names[self.Message_Type])
+            print(" Port: {}  Name: {}".format(self.Port_Number, TPort_Names[self.Port_Number-1]))
+            print(" Message Type: {}  Name : {}".format (self.Message_Type,TMessage_Names[self.Message_Type]))
             if self.Message_Type == 0 :
                display_flags=False
                display_epoch=False
                if self.On_Off == 5 :
-                  print " Power Output: On"
+                  print(" Power Output: On")
                else:
-                  print " Power Output: Off"
+                  print(" Power Output: Off")
             elif self.Message_Type == 22 :
                if self.On_Off == 0 :
-                  print " CMR Output: Off"
+                  print(" CMR Output: Off")
                   display_flags=False
                   display_epoch=False
                else:
-                  print " CMR Output: On "
+                  print(" CMR Output: On ")
                   if (self.Flags2 == None) or (self.Flags2 and Bit0 == 0) : # Normal CMR Output
-                     print " CMR Type: {}".format(TCMR_Names[self.Flags1])
+                     print(" CMR Type: {}".format(TCMR_Names[self.Flags1]))
                   else:
-                     print " CMR Type: SIB and Version "
+                     print(" CMR Type: SIB and Version ")
 
             else :
-               print " On/Off: {}".format(self.On_Off)
+               print(" On/Off: {}".format(self.On_Off))
 
             if display_epoch:
-               print " Epoch Rate: {}".format(self.Epoch_Rate)
+               print(" Epoch Rate: {}".format(self.Epoch_Rate))
 
             if display_flags:
-               print " Flags1: {} Flags2: {}".format(self.Flags1,self.Flags2)
-               print " Extra0: {} Extra1: {} Extra2: {}".format(self.Extras0,self.Extras1,self.Extras2)
+               print(" Flags1: {} Flags2: {}".format(self.Flags1,self.Flags2))
+               print(" Extra0: {} Extra1: {} Extra2: {}".format(self.Extras0,self.Extras1,self.Extras2))
 

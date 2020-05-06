@@ -63,11 +63,11 @@ class SetComms (DCOL.Dcol) :
 
         if Dump_Level >= Dump_Summary :
             if self.Set_Type ==1 :
-                print " Modem Init String: {}".format(
+                print(" Modem Init String: {}".format(
                     self.Modem_Init_Str
-                    );
+                    ));
             else :
-                print " Port: {}  Baud: {}  Data: {}  Parity: {}  Stop: {}\n Flow Control: {} Cts Delay {:.1f}".format(
+                print(" Port: {}  Baud: {}  Data: {}  Parity: {}  Stop: {}\n Flow Control: {} Cts Delay {:.1f}".format(
                 self.Port,
                 self.BAUD_RATE,
                 self.DATA_BITS,
@@ -75,4 +75,4 @@ class SetComms (DCOL.Dcol) :
                 self.STOP_BITS,
                 TSetComms_Flow_Control[self.FLOW_CONTROL],
                 self.CTS_DELAY
-                );
+                ));

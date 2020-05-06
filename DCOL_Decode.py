@@ -70,53 +70,53 @@ Dump_TimeStamp = args.Time
 Print_ACK_NAK  = args.ACK
 
 if args.Explain:
-    print "Dump undecoded: {},  Dump Decoded: {},  Dump ACK/NACK: {}, Dump TimeStamp: {}".format(
+    print("Dump undecoded: {},  Dump Decoded: {},  Dump ACK/NACK: {}, Dump TimeStamp: {}".format(
         Dump_Undecoded,
         Dump_Decoded,
         Print_ACK_NAK,
-        Dump_TimeStamp)
+        Dump_TimeStamp))
 
 
 
 dcol=Dcol(internal=args.Trimble,default_output_level=args.Level);
 
 if args.Explain:
-     print "Default Output Level: "  + str(args.Level)
+     print("Default Output Level: "  + str(args.Level))
 
 if args.None:
     for id in args.None:
         if args.Explain:
-            print "Decode Level None: " + hex(int(id,0))
+            print("Decode Level None: " + hex(int(id,0)))
         dcol.Dump_Levels[int(id,0)]=Dump_None
 
 if args.ID:
     for id in args.ID:
         if args.Explain:
-            print "Decode Level ID: " + hex(int(id,0))
+            print("Decode Level ID: " + hex(int(id,0)))
         dcol.Dump_Levels[int(id,0)]=Dump_ID
 
 if args.Summary:
     for id in args.Summary:
         if args.Explain:
-            print "Decode Level Summary: " + hex(int(id,0))
+            print("Decode Level Summary: " + hex(int(id,0)))
         dcol.Dump_Levels[int(id,0)]=Dump_Summary
 
 if args.Full:
     for id in args.Full:
         if args.Explain:
-            print "Decode Level Full: " + hex(int(id,0))
+            print("Decode Level Full: " + hex(int(id,0)))
         dcol.Dump_Levels[int(id,0)]=Dump_Full
 
 if args.Verbose:
     for id in args.Verbose:
         if args.Explain:
-            print "Decode Level Verbose: " + hex(int(id,0))
+            print("Decode Level Verbose: " + hex(int(id,0)))
         dcol.Dump_Levels[int(id,0)]=Dump_Verbose
 
 if args.GNSS:
    dcol.Set_Traffic(True)
    if args.Explain:
-      print "Traffic Mode"
+      print("Traffic Mode")
 
 
 
@@ -126,11 +126,11 @@ if args.GNSS:
 
 #print args.IP
 if args.IP == None:
-    print "Using Standard Input"
+    print("Using Standard Input")
     Use_TCP=False
     new_data = bytearray(sys.stdin.read(1))
 else:
-    print "Using TCP"
+    print("Using TCP")
     Use_TCP=True
     HOST = args.IP[0]
     PORT = int(args.IP[1])
@@ -158,32 +158,32 @@ while (new_data):
 #        print str(datetime.now())
         if result == Got_ACK :
             if Print_ACK_NAK:
-                print "ACK"
-                print ""
+                print("ACK")
+                print("")
         elif result == Got_NACK :
             if Print_ACK_NAK:
-                print "NACK"
-                print ""
+                print("NACK")
+                print("")
         elif result == Got_Undecoded :
             if Dump_Undecoded :
-                print "Undecoded Data: " +ByteToHex(dcol.undecoded);
+                print("Undecoded Data: " +ByteToHex(dcol.undecoded));
         elif result == Got_Packet :
             dcol.dump(dump_undecoded=Dump_Undecoded,dump_decoded=Dump_Decoded,dump_timestamp=Dump_TimeStamp);
             sys.stdout.flush()
         elif result == Got_Sub_Packet:
             if dcol.Dump_Levels[dcol.packet_ID] :
-                print dcol.name() + ' ( ' +  hex(dcol.packet_ID) +" ) : "
-                print " Sub packet of mutiple packet message"
-                print ""
+                print(dcol.name() + ' ( ' +  hex(dcol.packet_ID) +" ) : ")
+                print(" Sub packet of mutiple packet message")
+                print("")
                 sys.stdout.flush()
         elif result == Missing_Sub_Packet:
             if dcol.Dump_Levels[dcol.packet_ID] :
-                print dcol.name() + ' ( ' +  hex(dcol.packet_ID) +" ) : "
-                print " Final sub packet of mutiple packet message, missed a sub packet."
-                print ""
+                print(dcol.name() + ' ( ' +  hex(dcol.packet_ID) +" ) : ")
+                print(" Final sub packet of mutiple packet message, missed a sub packet.")
+                print("")
                 sys.stdout.flush()
         else :
-                print "INTERNAL ERROR: Unknown result"
+                print("INTERNAL ERROR: Unknown result")
                 sys.exit();
 #        print "processing"
         result = dcol.process_data ()
@@ -198,5 +198,5 @@ if Use_TCP:
 
 if Log_Raw:
     Raw_File.close()
-print "Bye"
+print("Bye")
 

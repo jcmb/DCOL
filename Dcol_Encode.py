@@ -1,8 +1,10 @@
+#!/usr/bin/env python
+
 # DCOL_Encoder
 # A simple class for encoding DCOL packet.
 
 from DCOL_Decls import *
-from binascii import hexlify
+from binascii import hexlify, unhexlify
 
 class Dcol_Encode:
     def encode (self, packet_Id, data) :
@@ -39,4 +41,4 @@ if __name__ == "__main__":
    Encode=Dcol_Encode()
 
 #   print hexlify(Encode.encode(int(sys.argv[1],16),sys.argv[2]))
-   print (Encode.encode(int(sys.argv[1],16),sys.argv[2]))
+   print((Encode.encode(int(sys.argv[1],16),unhexlify(sys.argv[2]))))

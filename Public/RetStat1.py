@@ -74,8 +74,8 @@ class RetStat1 (DCOL.Dcol) :
     def dump(self,Dump_Level):
 
         if Dump_Level >= Dump_Summary :
-            print ' SV\'s: {:<21d} Battery %: {:<15.1f} Reciever Status: {:<10s} Position Type: {}{}'.format(self.Number_SVS_LOCKED,self.BATTERY_REMAINING,self.STATUS_OF_RECVR, "" if self.New_POSITION else "OLD ",self.MEASUREMENT_Type)
+            print((' SV\'s: {:<21d} Battery %: {:<15.1f} Reciever Status: {:<10s} Position Type: {}{}'.format(self.Number_SVS_LOCKED,self.BATTERY_REMAINING,self.STATUS_OF_RECVR, "" if self.New_POSITION else "OLD ",self.MEASUREMENT_Type)))
 
         if Dump_Level >= Dump_Full :
-            print ' Measurements to go: {:<7d} Hours of Memory: {:<9.1f} L2 Channels: {:<14d} Status: {}'.format(self.Number_MEAS_TO_GO,self.HOURS_OF_MEM,self.L2_CHANNELS_OPER,self.STATUS_OF_SURVEY)
+            print((' Measurements to go: {:<7d} Hours of Memory: {:<9.1f} L2 Channels: {:<14d} Status: {}'.format(self.Number_MEAS_TO_GO,self.HOURS_OF_MEM,self.L2_CHANNELS_OPER,self.STATUS_OF_SURVEY)))
 

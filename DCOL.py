@@ -20,6 +20,7 @@ from DCOL_Decls import *
 from ENUM import enum
 from array import array
 from datetime import datetime
+from pprint import pprint
 
 
 Need_More=0
@@ -49,8 +50,8 @@ def ByteToHex( byteStr ):
 
 class Dcol:
     def __init__ (self,internal,default_output_level):
-        self.undecoded=bytearray("")
-        self.buffer=bytearray("")
+        self.undecoded=bytearray()
+        self.buffer=bytearray()
         self.internal=internal
         self.default_output_level=default_output_level
         self.last_packet_valid=False
@@ -109,14 +110,14 @@ class Dcol:
         self.packet_ID = 0;
 
         if len (self.buffer) > 0 :
-            self.undecoded=bytearray("");
-            if self.Looking_For_Traffic:
+            self.undecoded=bytearray();
+            if self.Looking_For_Traffic: #This is the V2 traffic format
 #               print "Looking for Traffic"
-               if (len(self.buffer) == 1) :
+               if (len(self.buffer) <= 5) :
                   return Need_More;
                else:
-                  if (self.buffer[0] == 0x00) or (self.buffer[0] == 0x01) : #The traffic always starts with a 0 or 1, if it isn't just skip the traffic
-                     del self.buffer[0:2]
+                  if  (self.buffer[0] == 0xaa) and (self.buffer[1] == 0x02) and ((self.buffer[3] == 0x00) or (self.buffer[3] == 0x01)) : #The traffic always starts with a 0 or 1, if it isn't just skip the traffic
+                     del self.buffer[0:5]
                      self.Looking_For_Traffic = False
                      return Need_More
                   else :
@@ -212,11 +213,13 @@ class Dcol:
                                 del self.buffer[0:packet_length + TrimComm_End_Location+1+Long_Packet_Adjustment]
 
                                 if dump_decoded :
-                                    print "Packet Data: " + ByteToHex (self.packet)
+                                    print(("Packet Data: " + ByteToHex (self.packet)))
 
                                 if self.Handlers[self.packet_ID] :
 #                                    print "have a handler for packet: " + hex (self.packet_ID)
-#                                    print "packet: " + str(len(self.packet)) + " " + hexlify(self.packet)
+#                                    pprint(self.packet)
+ #                                   pprint(self.data)
+ #                                   print ("packet: {} {}".format(str(len(self.packet)), hexlify(self.packet)))
                                     Result = self.Handlers[self.packet_ID].decode(self.data,self.internal);
                                     self.Looking_For_Traffic = self.Traffic
                                     return Result;
@@ -287,6 +290,7 @@ class Dcol:
         self._add_Handler(COMMOUT_TrimComm_Command,CommOut.CommOut());
         self._add_Handler(SetIdle_TrimComm_Command,SetIdle.SetIdle())
 #        self._add_Handler(AppFile_TrimComm_Command,AppFile.AppFile())
+        self._add_Handler(CMRW_TrimComm_Command,CMRGlonass.CMRGlonass())
 
 
         if internal :
@@ -307,7 +311,6 @@ class Dcol:
             self._add_Handler(GET_CHALLENGE_RESPONSE_TrimComm_Command,Login.Login());
             self._add_Handler(Wifi_TrimComm_Command,WiFi.WiFi());
             self._add_Handler(SBAS_Control_TrimComm_Command,SBAS.SBAS());
-            self._add_Handler(CMRW_TrimComm_Command,CMRGlonass.CMRGlonass())
             self._add_Handler(GETSVDATA_TrimComm_Command,GetSVData.GetSVData())
             self._add_Handler(RETSVDATA_TrimComm_Command,RetSVData.RetSVData())
             self._add_Handler(RTKCtrl_TrimComm_Command,RTKCtrl.RTKCtrl())
@@ -320,46 +323,46 @@ class Dcol:
     def dump (self,dump_undecoded=False,dump_status=False,dump_decoded=False,dump_timestamp=False):
         if self.Dump_Levels[self.packet_ID] :
             if dump_timestamp :
-               print datetime.now()
-            print self.name() + ' ( ' +  hex(self.packet_ID) +" ) " + " Length " + str(len(self.packet))+": "
+               print((datetime.now()))
+            print((self.name() + ' ( ' +  hex(self.packet_ID) +" ) " + " Length " + str(len(self.packet))+": "))
 
             if dump_status:
                 if (self.Dump_Levels[self.packet_ID] > Dump_ID) and (not (self.packet_ID in Non_Reply_Commands)) :
-                    print " Status Byte: :{:02X} ".format (
+                    print((" Status Byte: :{:02X} ".format (
                         self.Status_Byte
-                        )
-                    print "  Low Battery: {}  Low Memory: {}  Roving: {}".format (
-                        (self.Status_Byte & Bit1 <> 0),
-                        (self.Status_Byte & Bit0 <> 0),
-                        (self.Status_Byte & Bit3 <> 0)
-                        )
+                        )))
+                    print(("  Low Battery: {}  Low Memory: {}  Roving: {}".format (
+                        (self.Status_Byte & Bit1 != 0),
+                        (self.Status_Byte & Bit0 != 0),
+                        (self.Status_Byte & Bit3 != 0)
+                        )))
 
-                    print "  Synced: {}  Inited: {}  Inited: {}".format (
-                        (self.Status_Byte & Bit6 <> 0),
-                        (self.Status_Byte & Bit5 <> 0),
-                        (self.Status_Byte & Bit7 <> 0)
-                        )
-                    print ""
+                    print(("  Synced: {}  Inited: {}  Inited: {}".format (
+                        (self.Status_Byte & Bit6 != 0),
+                        (self.Status_Byte & Bit5 != 0),
+                        (self.Status_Byte & Bit7 != 0)
+                        )))
+                    print("")
 
 
             if self.packet_ID in Zero_Length_Commands :
                 if dump_decoded :
-                    print " Packet Data: " + ByteToHex (self.packet)
-                print " No Extra Information in Command, as expected"
-                print ""
+                    print((" Packet Data: " + ByteToHex (self.packet)))
+                print(" No Extra Information in Command, as expected")
+                print("")
             else:
                 if self.Handlers[self.packet_ID] :
     #                print "dump have a handler for packet: " + hex (self.packet_ID)
                     if dump_decoded :
-                        print " Packet Data: " + ByteToHex (self.packet)
+                        print((" Packet Data: " + ByteToHex (self.packet)))
                     self.Handlers[self.packet_ID].dump(self.Dump_Levels[self.packet_ID]);
 
-                    print ""
+                    print("")
                 else :
-                    print " Dont have a decoder for packet: " + hex (self.packet_ID) + " Length " + str(len(self.packet))
+                    print((" Dont have a decoder for packet: " + hex (self.packet_ID) + " Length " + str(len(self.packet))))
                     if dump_undecoded :
-                        print " Packet Data: " + ByteToHex (self.packet)
-                    print ""
+                        print((" Packet Data: " + ByteToHex (self.packet)))
+                    print("")
 
 
 import RetStat1

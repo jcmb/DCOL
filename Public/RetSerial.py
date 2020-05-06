@@ -57,12 +57,12 @@ class RetSerial (DCOL.Dcol) :
     def dump(self,Dump_Level):
 
         if Dump_Level >= Dump_Summary :
-            print " {} {}".format(self.RECEIVER_TYPE, self.RECEIVER_SERIAL)
-            print " Nav Version: {:7.2f} Signal Version: {:6.2f} Boot Verison: {:7.2f}".format(self.NAV_PROCESS_VER,self.SIG_PROCESS_VER,self.BOOT_ROM_VER)
-            print " USABLE CHANNELS: {} PHYSICAL CHANNELS: {} SIMULTANEOUS SVs: {}".format(self.USABLE_CHANNELS, self.PHYSICAL_CHANNELS, self.SIMULTANEOUS_SVs)
-            print " ANTENNA_TYPE: {}     Local_ANTENNA_SERIAL: {}".format(self.ANTENNA_TYPE, self.Local_ANTENNA_SERIAL)
-            print " BASE_ANTENNA_TYPE: {} BASE_ANTENNA_SERIAL: {}\n BASE_NGS_ANT_DESCRIPTOR: {}".format(self.BASE_ANTENNA_SERIAL, self.BASE_ANTENNA_TYPE, self.BASE_NGS_ANT_DESCRIPTOR);
-            print " ANTENNA_INI_VERSION: {}".format (self.ANTENNA_INI_VERSION)
+            print((" {} {}".format(self.RECEIVER_TYPE, self.RECEIVER_SERIAL)))
+            print((" Nav Version: {:7.2f} Signal Version: {:6.2f} Boot Verison: {:7.2f}".format(self.NAV_PROCESS_VER,self.SIG_PROCESS_VER,self.BOOT_ROM_VER)))
+            print((" USABLE CHANNELS: {} PHYSICAL CHANNELS: {} SIMULTANEOUS SVs: {}".format(self.USABLE_CHANNELS, self.PHYSICAL_CHANNELS, self.SIMULTANEOUS_SVs)))
+            print((" ANTENNA_TYPE: {}     Local_ANTENNA_SERIAL: {}".format(self.ANTENNA_TYPE, self.Local_ANTENNA_SERIAL)))
+            print((" BASE_ANTENNA_TYPE: {} BASE_ANTENNA_SERIAL: {}\n BASE_NGS_ANT_DESCRIPTOR: {}".format(self.BASE_ANTENNA_SERIAL, self.BASE_ANTENNA_TYPE, self.BASE_NGS_ANT_DESCRIPTOR)));
+            print((" ANTENNA_INI_VERSION: {}".format (self.ANTENNA_INI_VERSION)))
 
         if Dump_Level >= Dump_Verbose :
-            print " Channels: {} L1 Channels: {}".format(self.NUMBER_CHANNELS, self.NUMBER_CHANNELS_L1)
+            print((" Channels: {} L1 Channels: {}".format(self.NUMBER_CHANNELS, self.NUMBER_CHANNELS_L1)))

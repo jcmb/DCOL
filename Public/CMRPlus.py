@@ -16,7 +16,7 @@ class CMRPlus (DCOL.Dcol) :
 
 
     def decode(self,data,internal=False):
-        unpacked=unpack_from('> B B B',str(data))
+        unpacked=unpack_from('> B B B',data)
         self.station_ID=unpacked[0]
         self.Page_Index=unpacked[1]
         self.Max_Page_Index=unpacked[2]
@@ -25,8 +25,8 @@ class CMRPlus (DCOL.Dcol) :
     def dump(self,Dump_Level):
 
         if Dump_Level >= Dump_Summary :
-            print "  ID: {},  Page: {}, Max Page: {}".format(
+            print("  ID: {},  Page: {}, Max Page: {}".format(
               self.station_ID,
               self.Page_Index,
-              self.Max_Page_Index)
+              self.Max_Page_Index))
 

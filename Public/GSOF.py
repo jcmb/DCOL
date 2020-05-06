@@ -104,7 +104,7 @@ class GSOF (DCOL.Dcol) :
     def __init__ (self):
         self.last_page=-2
         self.max_page=-1
-        self.GSOF_Buffer=bytearray("")
+        self.GSOF_Buffer=bytearray()
         self.seq_number=-1
         self.seen_pages=set([])
         self.seen_subrecords=set([])
@@ -453,63 +453,63 @@ class GSOF (DCOL.Dcol) :
         if Dump_Level >= Dump_ID :
             for subrecord in self.seen_subrecords :
 #                print " Subrecord: {}".format(subrecord);
-                print " Subrecord: {:02} {}".format(subrecord,GSOF_Message_Names[subrecord]);
+                print(" Subrecord: {:02} {}".format(subrecord,GSOF_Message_Names[subrecord]));
                 if Dump_Level >= Dump_Summary:
 
                     if subrecord == GSOF_POSITION_TIME :
-                        print"  Time: {}:{:.2f}  SV's Used: {}  Flags1: {:08b}  Flags2: {:08b}  Init Counter: {}".format(
+                        print("  Time: {}:{:.2f}  SV's Used: {}  Flags1: {:08b}  Flags2: {:08b}  Init Counter: {}".format(
                         self.GPS_Week,
                         float(self.GPS_Time)/1000,
                         self.SVs_Used,
                         self.Flags1,
                         self.Flags2,
                         self.Init_Counter
-                        )
+                        ))
 
                     if subrecord == GSOF_LAT_LONG_HEIGHT :
-                        print "  Lat: {:0.8f}  Long: {:0.8f}  Height: {:0.3f}".format(
+                        print("  Lat: {:0.8f}  Long: {:0.8f}  Height: {:0.3f}".format(
                         math.degrees(self.Lat),
                         math.degrees(self.Long),
                         self.Height
-                        )
+                        ))
 
                     if subrecord == GSOF_ECEF_POSITION :
-                        print "  X: {:0.3f}  Y: {:0.3f}  Z: {:0.3f}".format(
+                        print("  X: {:0.3f}  Y: {:0.3f}  Z: {:0.3f}".format(
                         self.X,
                         self.Y,
                         self.Z
-                        )
+                        ))
 
                     if subrecord == GSOF_LOCAL_DATUM_POSITION :
-                        print "  Datum ID: {}  Lat: {:0.8f}  Long: {:0.8f}  Height: {:0.3f}".format(
+                        print("  Datum ID: {}  Lat: {:0.8f}  Long: {:0.8f}  Height: {:0.3f}".format(
                         self.Datum_ID,
                         self.Local_Lat,
                         self.Local_Long,
                         self.Local_Height
-                        );
+                        ));
 
                     if subrecord == GSOF_LOCAL_ZONE_POSITION :
-                        print "  Zone D: {}  Datum ID: {}  North: {:0.3f}  East: {:0.3f}  Elev: {:0.3f}".format(
+                        print("  Zone D: {}  Datum ID: {}  North: {:0.3f}  East: {:0.3f}  Elev: {:0.3f}".format(
                         self.Zone_ID,
                         self.Datum_ID,
                         self.Local_North,
                         self.Local_East,
                         self.Local_Elev
-                        )
+                        ))
 
                     if subrecord == GSOF_ECEF_DELTA :
-                        print "  dX: {:0.3f}  dY: {:0.3f}  dZ: {:0.3f}".format(
+                        print("  dX: {:0.3f}  dY: {:0.3f}  dZ: {:0.3f}".format(
                         self.dX,
                         self.dY,
                         self.dZ
-                        )
+                        ))
 
                     if subrecord == GSOF_TANGENT_PLANE_DELTA :
-                        print "  dX: {:0.3f}  dY: {:0.3f}  dZ: {:0.3f}".format(
+                        print("  dX: {:0.3f}  dY: {:0.3f}  dZ: {:0.3f}".format(
                         self.dE,
                         self.dN,
                         self.dU
-                        )
+                        ))
 
                     if subrecord == GSOF_VELOCITY_DATA :
                         Velocity_Valid = self.Velocity_Flags & Bit0 !=0
@@ -520,59 +520,59 @@ class GSOF (DCOL.Dcol) :
                            Velocity_Computed="Doppler"
 
                         if self.Local_Heading :
-                           print "  Heading: {:0.6f}  Velocity: {:0.4f}  Vertical_Velocity: {:0.4f}  Local_Heading: {:0.6f}\n  Velocity Valid: {:s}  Computed: {:s}".format(
+                           print("  Heading: {:0.6f}  Velocity: {:0.4f}  Vertical_Velocity: {:0.4f}  Local_Heading: {:0.6f}\n  Velocity Valid: {:s}  Computed: {:s}".format(
                            math.degrees(self.Heading),
                            self.Velocity,
                            self.Vertical_Velocity,
                            self.Local_Heading,
                            str(Velocity_Valid),
                            str(Velocity_Computed)
-                           );
+                           ));
                         else:
-                           print "  Heading: {:0.6f}  Velocity: {:0.4f}  Vertical_Velocity: {:0.4f}\n  Velocity Valid: {:s}  Computed: {:s}".format(
+                           print("  Heading: {:0.6f}  Velocity: {:0.4f}  Vertical_Velocity: {:0.4f}\n  Velocity Valid: {:s}  Computed: {:s}".format(
                            math.degrees(self.Heading),
                            self.Velocity,
                            self.Vertical_Velocity,
                            str(Velocity_Valid),
                            str(Velocity_Computed)
-                           );
+                           ));
 
 
 
 
                     if subrecord == GSOF_PDOP_INFO :
-                        print "  PDOP: {:0.1f}  HDOP: {:0.1f}  TDOP: {:0.1f}  VDOP: {:0.1f}".format(
+                        print("  PDOP: {:0.1f}  HDOP: {:0.1f}  TDOP: {:0.1f}  VDOP: {:0.1f}".format(
                         self.PDOP,
                         self.HDOP,
                         self.TDOP,
                         self.VDOP
-                        );
+                        ));
 
                     if subrecord == GSOF_CLOCK_INFO :
-                        print "  Clock Offset: {} Frequency offset: {} Flags: {:02}".format(
+                        print("  Clock Offset: {} Frequency offset: {} Flags: {:02}".format(
                         self.clock_flags,
                         self.clock_offset,
                         self.frequency_offset
-                        )
+                        ))
 
                     if subrecord == GSOF_POSITION_VCV_INFO :
                         unpacked=unpack_from('>f f f f f f f f H',str(self.GSOF_Buffer))
-                        print "  RMS: {}  Unit Variance: {} Number of Epochs: {} ".format (
+                        print("  RMS: {}  Unit Variance: {} Number of Epochs: {} ".format (
                             POSITION_RMS,
                             UNIT_VARIANCE,
-                            NUMBER_OF_EPOCHS)
+                            NUMBER_OF_EPOCHS))
 
-                        print "  xx: {}  xy: {} xz: {}  yy: {}  yz: {}  zz: {}".format (
+                        print("  xx: {}  xy: {} xz: {}  yy: {}  yz: {}  zz: {}".format (
                             VCV_xx,
                             VCV_xy,
                             VCV_xz,
                             VCV_yy,
                             VCV_yz,
                             VCV_zz
-                            )
+                            ))
 
                     if subrecord == GSOF_POSITION_SIGMA_INFO :
-                        print "  RMS: {:0.3f}  Sigma East: {:0.3f}  Sigma North: {:0.3f}  Sigma Up: {:0.3f}\n  Semi Major: {:0.3f}  Semi Minor: {:0.3f}  Orientaion: {:0.3f}\n  Covariance: {}  Unit Variance: {}  Number of Epochs: {}".format(
+                        print("  RMS: {:0.3f}  Sigma East: {:0.3f}  Sigma North: {:0.3f}  Sigma Up: {:0.3f}\n  Semi Major: {:0.3f}  Semi Minor: {:0.3f}  Orientaion: {:0.3f}\n  Covariance: {}  Unit Variance: {}  Number of Epochs: {}".format(
                         self.POSITION_RMS,
                         self.SIGMA_EAST,
                         self.SIGMA_NORTH,
@@ -583,26 +583,26 @@ class GSOF (DCOL.Dcol) :
                         self.COVAR_EAST_NORTH,
                         self.UNIT_VARIANCE,
                         self.NUMBER_EPOCHS
-                        );
+                        ));
 
                     if subrecord == GSOF_SV_BRIEF_INFO:
-                        print "  Number of SV's: " + str(self.Brief_Num_SVs)
+                        print("  Number of SV's: " + str(self.Brief_Num_SVs))
                         if Dump_Level == Dump_Full :
                             for SV in range(0,self.Brief_Num_SVs):
         #                                print "SV: " + str(SV)
-                                print "   SV: {:2}  Flags1: {:02X} Flags2: {:02X}".format(
+                                print("   SV: {:2}  Flags1: {:02X} Flags2: {:02X}".format(
                                         self.SV_Brief[SV][0],
                                         self.SV_Brief[SV][1],
                                         self.SV_Brief[SV][2]
-                                        )
+                                        ))
 
                         if Dump_Level >= Dump_Verbose :
                             for SV in range(0,self.Brief_Num_SVs):
         #                                print "SV: " + str(SV)
-                                print "   SV: {:2}".format(
+                                print("   SV: {:2}".format(
                                     self.SV_Brief[SV][0],
-                                    )
-                                print "    Above: {}  Channel Assigned: {}  Tracking L1: {}  Tracking L2: {}  Base Tracking L1: {}  Base Tracking L2: {}  Used in position: {}  Used in RTK: {}".format(
+                                    ))
+                                print("    Above: {}  Channel Assigned: {}  Tracking L1: {}  Tracking L2: {}  Base Tracking L1: {}  Base Tracking L2: {}  Used in position: {}  Used in RTK: {}".format(
                                         self.SV_Brief[SV][1] & Bit0 != 0,
                                         self.SV_Brief[SV][1] & Bit1 != 0,
                                         self.SV_Brief[SV][1] & Bit2 != 0,
@@ -611,106 +611,106 @@ class GSOF (DCOL.Dcol) :
                                         self.SV_Brief[SV][1] & Bit5 != 0,
                                         self.SV_Brief[SV][1] & Bit6 != 0,
                                         self.SV_Brief[SV][1] & Bit7 != 0,
-                                        )
+                                        ))
 
-                                print "    Tracking L1 P: {}  Tracking L2 P: {}  Tracking L1 CS: {}".format(
+                                print("    Tracking L1 P: {}  Tracking L2 P: {}  Tracking L1 CS: {}".format(
                                         self.SV_Brief[SV][2] & Bit0 != 0,
                                         self.SV_Brief[SV][2] & Bit1 != 0,
                                         self.SV_Brief[SV][2] & Bit2 != 0,
-                                        )
+                                        ))
 
 
                     if subrecord == GSOF_SV_DETAILED_INFO:
-                        print "  Number of SV's: " + str(self.Detailed_Num_SVs)
+                        print("  Number of SV's: " + str(self.Detailed_Num_SVs))
                         if Dump_Level >= Dump_Full :
                             for SV in range(0,self.Detailed_Num_SVs):
         #                                print "SV: " + str(SV)
-                                print "   SV: {:2}  Elevation: {:2}  Az: {:3}  L1 SNR: {:2}  L2 SNR: {:2}".format(
+                                print("   SV: {:2}  Elevation: {:2}  Az: {:3}  L1 SNR: {:2}  L2 SNR: {:2}".format(
                                     self.SV_Detailed[SV][0],
                                     self.SV_Detailed[SV][3],
                                     self.SV_Detailed[SV][4],
                                     self.SV_Detailed[SV][5]/4,
                                     self.SV_Detailed[SV][6]/4,
-                                    )
+                                    ))
 
                                 if Dump_Level >= Dump_Verbose :
 
-                                    print "   Flags1: {:02X} Flags2: {:02X}".format(
+                                    print("   Flags1: {:02X} Flags2: {:02X}".format(
                                         self.SV_Detailed[SV][1],
                                         self.SV_Detailed[SV][2]
-                                        )
+                                        ))
 
                     if subrecord == GSOF_RECEIVER_SERIAL_NUMBER :
-                        print "  Serial Number: {}".format(self.Serial_Number);
+                        print("  Serial Number: {}".format(self.Serial_Number));
 
                     elif subrecord == GSOF_CURRENT_TIME_INFORMATION :
-                        print "   Current {}:{:.3f}  OFFSET: {}  Time Valid: {}  Offset Valid: {}".format(
+                        print("   Current {}:{:.3f}  OFFSET: {}  Time Valid: {}  Offset Valid: {}".format(
                             self.Current_WEEK,
                             float(self.Current_TIME)/1000,
                             self.Current_UTC_OFFSET,
                             self.Current_Time_FLAGS & Bit0 != 0,
                             self.Current_Time_FLAGS & Bit1 != 0,
-                            )
+                            ))
 
                     elif subrecord == GSOF_POSITION_TIME_UTC :
-                        print "   Current {}:{:.3f}  SV's: {}  Flags1: {:02X} Flags2: {:02X}  Init Counter: {}".format(
+                        print("   Current {}:{:.3f}  SV's: {}  Flags1: {:02X} Flags2: {:02X}  Init Counter: {}".format(
                            self.UTC_WEEK,
                            float(self.UTC_TIME)/1000,
                            self.UTC_Number_of_SVs,
                            self.UTC_FLAGS1,
                            self.UTC_FLAGS2,
-                           self.UTC_Init_Counter);
+                           self.UTC_Init_Counter));
 
                     elif subrecord == GSOF_ATTITUDE_INFO : # = 27
-                        print "   Time: {:.3f}  SV's: {}  Flags: {:02X} Calc: {} PDOP: {:.1f}".format(
+                        print("   Time: {:.3f}  SV's: {}  Flags: {:02X} Calc: {} PDOP: {:.1f}".format(
                            float(self.ATTITUDE_GPS_TIME)/1000,
                            self.ATTITUDE_Num_SVs,
                            self.ATTITUDE_Flags,
                            ATTITUDE_Calc_Mode_Names[self.ATTITUDE_Calc_Mode] if  self.ATTITUDE_Calc_Mode < len(ATTITUDE_Calc_Mode_Names) else "Unknown " + hex(self.ATTITUDE_Calc_Mode),
                            self.ATTITUDE_Calc_Mode,
-                           self.ATTITUDE_PDOP)
+                           self.ATTITUDE_PDOP))
 
-                        print "   Pitch: {:.3f}  Yaw: {:.3f}  Roll: {:.3f}  Range: {:.3f}".format(
+                        print("   Pitch: {:.3f}  Yaw: {:.3f}  Roll: {:.3f}  Range: {:.3f}".format(
                            math.degrees(self.ATTITUDE_Pitch),
                            math.degrees(self.ATTITUDE_Yaw),
                            math.degrees(self.ATTITUDE_Roll),
-                           self.ATTITUDE_Range)
+                           self.ATTITUDE_Range))
 
                         if Dump_Level >= Dump_Full :
-                           print "   StdDev:: Pitch: {:.3f}  Yaw: {:.3f}  Roll: {:.3f}  Range: {:.3f}".format(
+                           print("   StdDev:: Pitch: {:.3f}  Yaw: {:.3f}  Roll: {:.3f}  Range: {:.3f}".format(
                               math.degrees(math.sqrt(self.ATTITUDE_Pitch_Variance)),
                               math.degrees(math.sqrt(self.ATTITUDE_Yaw_Variance)),
                               math.degrees(math.sqrt(self.ATTITUDE_Roll_Variance)),
                               math.sqrt(self.ATTITUDE_Range_Variance)
-                              )
+                              ))
 
-                           print "   Valid:: Pitch: {}  Yaw: {}  Roll: {}  Range: {}".format(
+                           print("   Valid:: Pitch: {}  Yaw: {}  Roll: {}  Range: {}".format(
                               self.ATTITUDE_Flags & Bit1 != 0,
                               self.ATTITUDE_Flags & Bit2 != 0,
                               self.ATTITUDE_Flags & Bit3 != 0,
                               self.ATTITUDE_Flags & Bit4 != 0
-                              )
+                              ))
 
                     if subrecord == GSOF_BriefAllSVInfo:
-                        print "  Number of SV's: " + str(self.Brief_All_Num_SVs)
+                        print("  Number of SV's: " + str(self.Brief_All_Num_SVs))
                         if Dump_Level == Dump_Full :
                             for SV in range(0,self.Brief_All_Num_SVs):
         #                                print "SV: " + str(SV)
-                                print "   SV: {:3}  System: {:7}  Flags1: {:02X} Flags2: {:02X}".format(
+                                print("   SV: {:3}  System: {:7}  Flags1: {:02X} Flags2: {:02X}".format(
                                         self.SV_All_Brief[SV][0],
                                         GNSS_System_Names[self.SV_All_Brief[SV][1]] if self.SV_All_Brief[SV][1] < len(GNSS_System_Names) else "Unknown " + hex(self.SV_All_Brief[SV][1]),
                                         self.SV_All_Brief[SV][2],
                                         self.SV_All_Brief[SV][3]
-                                        )
+                                        ))
 
                         if Dump_Level >= Dump_Verbose :
                             for SV in range(0,self.Brief_All_Num_SVs):
         #                                print "SV: " + str(SV)
-                                print "   SV: {:3}  System: {:7}".format(
+                                print("   SV: {:3}  System: {:7}".format(
                                     self.SV_All_Brief[SV][0],
                                     GNSS_System_Names[self.SV_All_Brief[SV][1]] if self.SV_All_Brief[SV][1] < len(GNSS_System_Names) else "Unknown " + hex(self.SV_All_Brief[SV][1]),
-                                    )
-                                print "    Above: {}  Channel Assigned: {}  Tracking L1: {}  Tracking L2: {}  Base Tracking L1: {}  Base Tracking L2: {}  Used in position: {}  Used in RTK: {}".format(
+                                    ))
+                                print("    Above: {}  Channel Assigned: {}  Tracking L1: {}  Tracking L2: {}  Base Tracking L1: {}  Base Tracking L2: {}  Used in position: {}  Used in RTK: {}".format(
                                         self.SV_All_Brief[SV][2] & Bit0 != 0,
                                         self.SV_All_Brief[SV][2] & Bit1 != 0,
                                         self.SV_All_Brief[SV][2] & Bit2 != 0,
@@ -719,21 +719,21 @@ class GSOF (DCOL.Dcol) :
                                         self.SV_All_Brief[SV][2] & Bit5 != 0,
                                         self.SV_All_Brief[SV][2] & Bit6 != 0,
                                         self.SV_All_Brief[SV][2] & Bit7 != 0,
-                                        )
+                                        ))
 
-                                print "    Tracking L1 P: {}  Tracking L2 P: {}  Tracking L1 CS: {}".format(
+                                print("    Tracking L1 P: {}  Tracking L2 P: {}  Tracking L1 CS: {}".format(
                                         self.SV_All_Brief[SV][3] & Bit0 != 0,
                                         self.SV_All_Brief[SV][3] & Bit1 != 0,
                                         self.SV_All_Brief[SV][3] & Bit2 != 0,
-                                        )
+                                        ))
 
 
 
                     if subrecord == GSOF_DetailedAllSVInfo:
-                        print "  Number of SV's: " + str(self.Detailed_All_Num_SVs)
+                        print("  Number of SV's: " + str(self.Detailed_All_Num_SVs))
                         if Dump_Level >= Dump_Full :
                             for SV in range(0,self.Detailed_All_Num_SVs):
-                                print "   System: {}  SV: {:2}  Elevation: {:2}  Az: {:3}  L1 SNR: {:2}  L2 SNR: {:2}  L5 SNR: {:2}".format(
+                                print("   System: {}  SV: {:2}  Elevation: {:2}  Az: {:3}  L1 SNR: {:2}  L2 SNR: {:2}  L5 SNR: {:2}".format(
                                 self.SV_Detailed_All[SV][1],
                                 self.SV_Detailed_All[SV][0],
                                 self.SV_Detailed_All[SV][4],
@@ -741,65 +741,65 @@ class GSOF (DCOL.Dcol) :
                                 self.SV_Detailed_All[SV][6]/4,
                                 self.SV_Detailed_All[SV][7]/4,
                                 self.SV_Detailed_All[SV][8]/4
-                                )
+                                ))
 
                             if Dump_Level >= Dump_Verbose :
-                                print "   Flags1: {:02X} Flags2: {:02X}".format(
+                                print("   Flags1: {:02X} Flags2: {:02X}".format(
                                     self.SV_Detailed_All[SV][2],
                                     self.SV_Detailed_All[SV][3]
-                                    )
+                                    ))
 
                     elif subrecord == GSOF_ReceivedBaseInfo : # 35 #// * 35 Received base information */
-                        print "  Valid: {}  Name: {}  ID: {}".format(
+                        print("  Valid: {}  Name: {}  ID: {}".format(
                             self.Received_Base_Flags & Bit3 != 0,
                             self.Received_Base_Name,
-                            self.Received_Base_ID);
-                        print "  Lat: {:0.8f}  Long: {:0.8f}  Height: {:0.3f}".format(
+                            self.Received_Base_ID));
+                        print("  Lat: {:0.8f}  Long: {:0.8f}  Height: {:0.3f}".format(
                             math.degrees(self.Received_Base_Lat),
                             math.degrees(self.Received_Base_Long),
-                            self.Received_Base_Height)
+                            self.Received_Base_Height))
 
 
                     elif subrecord == GSOF_BatteryMemoryInfo : # 37 #// * 35 Memory Battery */
-                        print "  Battery: {}  Memory Left: {:.1}".format(
+                        print("  Battery: {}  Memory Left: {:.1}".format(
                             self.Battery_Capacity,
                             self.Memory_Left
-                            )
+                            ))
 
                     elif subrecord == GSOF_RtkErrorScale:
-                        print "  Error Scale: {}  Correction Age: {}".format (
+                        print("  Error Scale: {}  Correction Age: {}".format (
                             self.error_Scale,
                             self.correction_Age
-                            )
-                        print "  Wide Area: {}  Fixed: {}".format (
+                            ))
+                        print("  Wide Area: {}  Fixed: {}".format (
                             (self.solution_Flags and Bit0) != 0,
                             (self.solution_Flags and Bit1) != 0
-                            )
+                            ))
 
-                        print "  xFill: {}  RTX: {}  RTX Link Down: : {} ".format (
+                        print("  xFill: {}  RTX: {}  RTX Link Down: : {} ".format (
                             (self.network_Flags and Bit5) != 0,
                             (self.network_Flags and Bit6) != 0,
                             (self.network_Flags and Bit7) != 0
-                            )
+                            ))
 
-                        print "  New Base: {}  Outside GeoFence: {}  Outside Range Limit: {} ".format (
+                        print("  New Base: {}  Outside GeoFence: {}  Outside Range Limit: {} ".format (
                             (self.network_Flags and Bit0) != 0,
                             (self.network_Flags and Bit3) != 0,
                             (self.network_Flags and Bit4) != 0
-                            )
+                            ))
 
 
 
 
                     elif subrecord == GSOF_SV_Correction_Beam_Status_Info: # 40
                         if Dump_Level >= Dump_Summary :
-                            print "  SV Name: {}  Freq: {:0.3f}  Bit Rate: {} C/No [dBHz]: {:0.2f}  I/Q ratio: {:.5f}".format (
+                            print("  SV Name: {}  Freq: {:0.3f}  Bit Rate: {} C/No [dBHz]: {:0.2f}  I/Q ratio: {:.5f}".format (
                                 self.beam_SV_Name,
                                 self.beam_Freq,
                                 self.beam_Rate,
                                 self.beam_SNR,
                                 self.beam_I_Q
-                                )
+                                ))
 
                         if Dump_Level >= Dump_Full :
 
@@ -849,27 +849,27 @@ class GSOF (DCOL.Dcol) :
                             elif self.beam_OMNISTAR_MOTION == 255 :
                                 OmniStar_Motion = "Unknown"
 
-                            print "  Beam: {}  Subscribed: {}  HP/XP Active: {}  VBS Active: {}  Motion: {}".format(
+                            print("  Beam: {}  Subscribed: {}  HP/XP Active: {}  VBS Active: {}  Motion: {}".format(
                                 Beam_Mode,
                                 Subscribed_Engine,
                                 self.beam_HP_XP_LIBRARY_MODE != 0,
                                 self.beam_VBS_LIBRARY_MODE!=0,
                                 OmniStar_Motion
-                                )
+                                ))
 
                         if Dump_Level >= Dump_Verbose :
-                            print "  Total Messages: {}  Messages with Errors: {}  Bad Messages: {}  Bad unique word bits: {}".format (
+                            print("  Total Messages: {}  Messages with Errors: {}  Bad Messages: {}  Bad unique word bits: {}".format (
                                 self.beam_Total_unique_messages,
                                 self.beam_Total_unique_messages_with_errors,
                                 self.beam_Bad_Messages,
                                 self.beam_Total_Bad_unique_word_bits,
-                                )
+                                ))
 
-                            print "  Estimated BER: {} Total Viterbi symbols: {} Corrected Viterbi symbols: {}".format (
+                            print("  Estimated BER: {} Total Viterbi symbols: {} Corrected Viterbi symbols: {}".format (
                                 self.beam_Est_BER,
                                 self.beam_Total_Viterbi_symbols,
                                 self.beam_Corrected_Viterbi_symbols,
-                                )
+                                ))
 
 #                            self.beam_3-SIGMA_HORIZONTAL_PRECISION_THRESHOLD=unpacked[9]
 #                            self.beam_3-SIGMA_VERTICAL_PRECISION_THRESHOLD=unpacked[10]
@@ -878,14 +878,14 @@ class GSOF (DCOL.Dcol) :
 
 
                     elif subrecord == GSOF_Base_Position_Quaility :
-                        print"  Time: {}:{:.2f}  Lat: {:0.8f}  Long: {:0.8f}  Height: {:0.3f}  Quaility: {}".format(
+                        print("  Time: {}:{:.2f}  Lat: {:0.8f}  Long: {:0.8f}  Height: {:0.3f}  Quaility: {}".format(
                         self.Base_GPS_Week,
                         float(self.Base_GPS_Time,)/1000,
                         math.degrees(self.Base_Lat),
                         math.degrees(self.Base_Long),
                         self.Base_Height,
                         self.Base_Quaility
-                        )
+                        ))
 
 
 

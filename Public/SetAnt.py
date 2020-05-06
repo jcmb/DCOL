@@ -27,5 +27,5 @@ class SetAnt (DCOL.Dcol) :
     def dump(self,Dump_Level):
 
         if Dump_Level >= Dump_Summary :
-            print " ANTENNA_TYPE: {}  ANTENNA_SERIAL: {}".format(self.Antenna_TYPE, self.Antenna_SERIAL)
+            print(" ANTENNA_TYPE: {}  ANTENNA_SERIAL: {}".format(self.Antenna_TYPE, self.Antenna_SERIAL))
 
