@@ -24,6 +24,7 @@ try:
    from JCMBSoftPyLib import GPS_TIME
 except:
    print ("JCMBSoftPyLib is not installed. Download and install from https://github.com/jcmb/JCMBSoftPyLib.git")
+   sys.exit(1)
 
 GPS_Offset=18
 
