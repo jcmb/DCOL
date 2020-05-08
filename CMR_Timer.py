@@ -7,13 +7,16 @@ import time
 import datetime
 import socket
 
+import os
+script_dir=os.path.dirname(os.path.realpath(__file__))
+print (script_dir)
 
-sys.path.append("Public"); # Gave up trying to work how to do this with a .pth file or using .
-sys.path.append("/Users/gkirk/Documents/GitHub/DCOL")
-sys.path.append("/Users/gkirk/Documents/GitHub/DCOL/Public")
+sys.path.append(script_dir+"/Public"); # Gave up trying to work how to do this with a .pth file or using .
+sys.path.append(script_dir+"/internal"); # Gave up trying to work how to do this with a .pth file or using .
+sys.path.append(script_dir+"/internal_stubs"); # Gave up trying to work how to do this with a .pth file or using .
+
+
 sys.path.append("/Users/gkirk/Dropbox/Develop/python/DCOL/internal")
-sys.path.append("internal");
-sys.path.append("internal_stubs");
 
 from DCOL import *
 from DCOL_Decls import *
