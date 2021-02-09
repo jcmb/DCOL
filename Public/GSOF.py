@@ -34,6 +34,7 @@ GSOF_BatteryMemoryInfo = 37 # // * 37 Receiver remaining Battery and Memory info
 GSOF_RtkErrorScale = 38
 GSOF_SV_Correction_Beam_Status_Info = 40 # // L Band Status Info
 GSOF_Base_Position_Quaility= 41;
+GSOF_Multiple_Page_All_Sv_Detailed_Info=48
 
 
 GSOF_Message_Names=  ('Unknown',
@@ -82,7 +83,9 @@ GSOF_Message_Names=  ('Unknown',
     'Reserved 43',
     'Reserved 44',
     'Reserved 45',
-    'Reserved 46'
+    'Reserved 46',
+    'Reserved 47',
+    'MULTIPLE PAGE ALL SV DETAILED INFO',
     );
 
 
@@ -97,7 +100,15 @@ GNSS_System_Names=(
    'GPS',
    'SBAS',
    'GLONASS',
-   'GALILEO')
+   'GALILEO',
+   'QZSS',
+   'BEIDOU',
+   'IRNSS',
+   'R7',
+   'R8',
+   'R9',
+   'OMNISTAR'
+   )
 
 
 class GSOF (DCOL.Dcol) :
@@ -355,7 +366,8 @@ class GSOF (DCOL.Dcol) :
 
                     elif subrecord == GSOF_DetailedAllSVInfo:
 #                        print "Start of decode"
-                        SV_Detail_Buffer=self.GSOF_Buffer
+                        SV_Detail_Buffer=bytearray()
+                        SV_Detail_Buffer[:]=self.GSOF_Buffer
                         self.Detailed_All_Num_SVs=SV_Detail_Buffer[0]
                         del SV_Detail_Buffer[0]
 #                        print "***Num SV's: " + str(self.Detailed_Num_SVs)
@@ -428,6 +440,41 @@ class GSOF (DCOL.Dcol) :
                         self.Base_Long=unpacked[3]
                         self.Base_Height=unpacked[4]
                         self.Base_Quaility=unpacked[5]
+
+
+
+                    elif subrecord == GSOF_Multiple_Page_All_Sv_Detailed_Info:
+#                        print "Start of decode"
+#                        print "GSOF Buffer Length: " + str(len(self.GSOF_Buffer))
+#                        print "sub: {} Length: {:02X}".format (subrecord,length);
+                        SV_Detail_Buffer=bytearray()
+                        SV_Detail_Buffer[:]=self.GSOF_Buffer
+                        self.Multi_Page_Version=SV_Detail_Buffer[0]
+                        del SV_Detail_Buffer[0]
+                        self.Multi_Page_Info=SV_Detail_Buffer[0]
+                        del SV_Detail_Buffer[0]
+
+                        current_SVs=SV_Detail_Buffer[0]
+                        del SV_Detail_Buffer[0]
+
+#                        print ("{:02X}".format(self.Multi_Page_Info))
+                        if self.Multi_Page_Info >> 4 == 1:
+                            self.SV_Detailed_All={}
+                            self.Detailed_All_Num_SVs=0
+
+#                           self.Detailed_All_Num_SVs=SV_Detail_Buffer[0]
+#                        print "***Num SV's: " + str(self.Detailed_All_Num_SVs)
+                        if current_SVs:
+                            for SV in range(self.Detailed_All_Num_SVs,self.Detailed_All_Num_SVs+current_SVs):
+#                                print "SV: " + str(SV) + " " + str(1+(calcsize('>B B B B H B B')*SV))
+ #                               print len(SV_Detail_Buffer)
+ #                               print hexlify(SV_Detail_Buffer)
+                                unpacked=unpack_from('>B B B B b H B B B',str(SV_Detail_Buffer))
+                                del SV_Detail_Buffer[0:calcsize('>B B B B b H B B B')]
+                                self.SV_Detailed_All[SV]=unpacked
+#                                print unpacked
+                        self.Detailed_All_Num_SVs+=current_SVs
+#                        print "***Num SV's: " + str(self.Detailed_All_Num_SVs)
 
                     else:
                         pass # undecoded message
@@ -733,14 +780,14 @@ class GSOF (DCOL.Dcol) :
                         print("  Number of SV's: " + str(self.Detailed_All_Num_SVs))
                         if Dump_Level >= Dump_Full :
                             for SV in range(0,self.Detailed_All_Num_SVs):
-                                print("   System: {}  SV: {:2}  Elevation: {:2}  Az: {:3}  L1 SNR: {:2}  L2 SNR: {:2}  L5 SNR: {:2}".format(
-                                self.SV_Detailed_All[SV][1],
+                                print("   System: {:8}  SV: {:3}  Elevation: {:3}  Az: {:3}  L1 SNR: {:5}  L2 SNR: {:5}  L5 SNR: {:5}".format(
+                                GNSS_System_Names[self.SV_Detailed_All[SV][1]],
                                 self.SV_Detailed_All[SV][0],
                                 self.SV_Detailed_All[SV][4],
                                 self.SV_Detailed_All[SV][5],
-                                self.SV_Detailed_All[SV][6]/4,
-                                self.SV_Detailed_All[SV][7]/4,
-                                self.SV_Detailed_All[SV][8]/4
+                                float(self.SV_Detailed_All[SV][6]/4.0),
+                                float(self.SV_Detailed_All[SV][7]/4.0),
+                                float(self.SV_Detailed_All[SV][8]/4.0)
                                 ))
 
                             if Dump_Level >= Dump_Verbose :
@@ -887,6 +934,24 @@ class GSOF (DCOL.Dcol) :
                         self.Base_Quaility
                         ))
 
+                    elif subrecord == GSOF_Multiple_Page_All_Sv_Detailed_Info:
+                        print("  Version: {}  Info: {:02X} Number of SV's: {}".format(self.Multi_Page_Version,self.Multi_Page_Info,self.Detailed_All_Num_SVs))
 
+                        if Dump_Level >= Dump_Full :
+                            for SV in range(0,self.Detailed_All_Num_SVs):
+                                print("   System: {:8}  SV: {:3}  Elevation: {:3}  Az: {:3}  L1 SNR: {:5}  L2 SNR: {:5}  L5 SNR: {:5}".format(
+                                GNSS_System_Names[self.SV_Detailed_All[SV][1]],
+                                self.SV_Detailed_All[SV][0],
+                                self.SV_Detailed_All[SV][4],
+                                self.SV_Detailed_All[SV][5],
+                                float(self.SV_Detailed_All[SV][6]/4.0),
+                                float(self.SV_Detailed_All[SV][7]/4.0),
+                                float(self.SV_Detailed_All[SV][8]/4.0)
+                                ))
 
+                            if Dump_Level >= Dump_Verbose :
+                                print("   Flags1: {:02X} Flags2: {:02X}".format(
+                                    self.SV_Detailed_All[SV][2],
+                                    self.SV_Detailed_All[SV][3]
+                                    ))
 
