@@ -790,11 +790,11 @@ class GSOF (DCOL.Dcol) :
                                 float(self.SV_Detailed_All[SV][8]/4.0)
                                 ))
 
-                            if Dump_Level >= Dump_Verbose :
-                                print("   Flags1: {:02X} Flags2: {:02X}".format(
-                                    self.SV_Detailed_All[SV][2],
-                                    self.SV_Detailed_All[SV][3]
-                                    ))
+                                if Dump_Level >= Dump_Verbose :
+                                    print("   Flags1: {:02X} Flags2: {:02X}".format(
+                                        self.SV_Detailed_All[SV][2],
+                                        self.SV_Detailed_All[SV][3]
+                                        ))
 
                     elif subrecord == GSOF_ReceivedBaseInfo : # 35 #// * 35 Received base information */
                         print("  Valid: {}  Name: {}  ID: {}".format(
@@ -947,11 +947,12 @@ class GSOF (DCOL.Dcol) :
                                 float(self.SV_Detailed_All[SV][6]/4.0),
                                 float(self.SV_Detailed_All[SV][7]/4.0),
                                 float(self.SV_Detailed_All[SV][8]/4.0)
-                                ))
+                                )),
 
-                            if Dump_Level >= Dump_Verbose :
-                                print("   Flags1: {:02X} Flags2: {:02X}".format(
-                                    self.SV_Detailed_All[SV][2],
-                                    self.SV_Detailed_All[SV][3]
-                                    ))
+                                if Dump_Level >= Dump_Verbose :
+                                    print("   Flags1: {:02X} Flags2: {:02X}".format(
+                                        self.SV_Detailed_All[SV][2],
+                                        self.SV_Detailed_All[SV][3]
+                                        )),
+                                print
 
