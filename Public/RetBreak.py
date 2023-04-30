@@ -50,28 +50,28 @@ class RetBreak (DCOL.Dcol) :
     def dump(self,Dump_Level):
 
         if Dump_Level >= Dump_Summary :
-            print(" Product: {}, Serial: {}, Version: {},  RefVer: {}".format (
+            print((" Product: {}, Serial: {}, Version: {},  RefVer: {}".format (
                self.Product,
                self.Serial,
                self.Version,
                self.RefVer
-               ))
+               )))
 
-            print(" Name: {}".format(
+            print((" Name: {}".format(
                self.Name
-               ))
+               )))
 
-            print(" Port: {}   Status: {}  Comm: {}  Ethernet: {}".format(
+            print((" Port: {}   Status: {}  Comm: {}  Ethernet: {}".format(
                self.Port,
                self.PortStatus,
                self.Comm,
                self.ETHIP
-               ))
+               )))
 
 
         if Dump_Level >= Dump_Verbose :
-            print(" {}".format(
+            print((" {}".format(
                 self.breakString
-                ))
+                )))
 
 

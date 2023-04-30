@@ -76,8 +76,8 @@ class SetIdle (DCOL.Dcol) :
    def dump(self,Dump_Level):
 
       if Dump_Level >= Dump_Summary :
-         print(" Epoch Interval: {}ms".format(self.Epoch_Interval))
-         print(" Elevation Mask: {} PDOP Mask: {}".format(self.Elevation_Mask,self.PDOP))
-         print(" Everest: {}  Flags 2: {:x}".format(self.Everest,self.Calc_Flags_2))
-         print(" Use Height: {}  Height: {}".format(TUse_Height_Names[self.Use_Height],self.Height))
-         print(" Corr Age:: GPS: {} GLN: {} GAL: {} BDS: {}".format(self.GPS_Corr_Age,self.GLN_Corr_Age,self.GAL_Corr_Age,self.BDS_Corr_Age))
+         print((" Epoch Interval: {}ms".format(self.Epoch_Interval)))
+         print((" Elevation Mask: {} PDOP Mask: {}".format(self.Elevation_Mask,self.PDOP)))
+         print((" Everest: {}  Flags 2: {:x}".format(self.Everest,self.Calc_Flags_2)))
+         print((" Use Height: {}  Height: {}".format(TUse_Height_Names[self.Use_Height],self.Height)))
+         print((" Corr Age:: GPS: {} GLN: {} GAL: {} BDS: {}".format(self.GPS_Corr_Age,self.GLN_Corr_Age,self.GAL_Corr_Age,self.BDS_Corr_Age)))

@@ -154,7 +154,8 @@ class Trimcomm_Command_Names:
         self.Command_Names[GENOUT_TrimComm_Command]    = 'GSOF'
         self.Command_Names[CMR_Type_TrimComm_Command] = 'CMR'
         self.Command_Names[CMR_PLUS_TrimComm_Command] = 'CMR+'
-
+        self.Command_Names[CMRW_TrimComm_Command] = 'GLONASS CMR'
+        
 
     def name (self,packet_ID):
         return self.Command_Names[packet_ID]
@@ -195,6 +196,14 @@ Non_Reply_Commands = set ([
     CMR_Type_TrimComm_Command,
     CMR_PLUS_TrimComm_Command
     ])
+    
+    
+TMotion_Names= (
+   'Unknown 0',
+   'Static',
+   'Kinematic',
+   'Unknown 3')
+
 
 try:
    from DCOL_Internal import *

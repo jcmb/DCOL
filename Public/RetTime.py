@@ -45,14 +45,14 @@ class RetTime (DCOL.Dcol) :
     def dump(self,Dump_Level):
 
         if Dump_Level >= Dump_ID :
-            print(" Subtype: {}".format(self.Subtype))
+            print((" Subtype: {}".format(self.Subtype)))
 
         if Dump_Level >= Dump_Summary :
             if self.Subtype==0:
-                print(" Week : {}  Time: {}".format(self.Week_Number, self.Time))
+                print((" Week : {}  Time: {}".format(self.Week_Number, self.Time)))
                 if Dump_Level >= Dump_Verbose :
-                    print(" UTC Offset: {}  Time Offset: {}  Time Mode".format(self.UTC_Offset, self.Time_Offset,self.Time_Mode))
+                    print((" UTC Offset: {}  Time Offset: {}  Time Mode".format(self.UTC_Offset, self.Time_Offset,self.Time_Mode)))
             else:
-                print(" Uptime : {} ".format(self.Uptime))
+                print((" Uptime : {} ".format(self.Uptime)))
 
 

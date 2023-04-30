@@ -9,12 +9,6 @@ from DCOL_Decls import *
 import numpy
 
 
-TMotion_Names= (
-   'Unknown 0',
-   'Static',
-   'Kinematic',
-   'Unknown 3')
-
 class CMR (DCOL.Dcol) :
    def __init__ (self):
 
@@ -345,40 +339,40 @@ class CMR (DCOL.Dcol) :
 #         print "Version Number: {:X}".format(self.version_number)
          if self.CMRx:
             print("CMRx")
-            print("   Type: {}  ID: {}".format(
+            print(("   Type: {}  ID: {}".format(
                self.message_type,
                self.station_ID
-               ))
+               )))
          elif self.Dummy :
             print("Dummy CMR")
          else :
 #            print "CMR Message: {}".format(self.message_type)
             if (self.message_type == 2) or (self.message_type==1) :
                if Dump_Level >= Dump_Summary :
-                  print("Epoch_Time: {}".format(self.Epoch_Time))
-                  print("Low Base Battery: {}, Low Base Memory: {}, L2 Enabled: {}".format(self.Low_Base_Battery,self.Low_Base_Memory,self.L2_Enabled))
-                  print("Motion: {}, Antenna Type: {}".format(TMotion_Names[self.Motion_State],self.Antenna_Type))
+                  print(("Epoch_Time: {}".format(self.Epoch_Time)))
+                  print(("Low Base Battery: {}, Low Base Memory: {}, L2 Enabled: {}".format(self.Low_Base_Battery,self.Low_Base_Memory,self.L2_Enabled)))
+                  print(("Motion: {}, Antenna Type: {}".format(TMotion_Names[self.Motion_State],self.Antenna_Type)))
                if Dump_Level >= Dump_Verbose :
-                  print("Maxwell: {}, Reserved: {}".format(self.Maxwell,self.Reserved))
+                  print(("Maxwell: {}, Reserved: {}".format(self.Maxwell,self.Reserved)))
 
             if self.message_type == 1:
-               print("   X (mm):            {:16.0f}  Y (mm): {:16.0f}  Z (mm): {:16.0f}".format(
+               print(("   X (mm):            {:16.0f}  Y (mm): {:16.0f}  Z (mm): {:16.0f}".format(
                self.X,
                self.Y,
-               self.Z));
-               print("   Antenna Height (mm): {:6.0f}   East Offset (mm): {:6.0f} Northing Offset (mm): {:6.0f}".format(
+               self.Z)));
+               print(("   Antenna Height (mm): {:6.0f}   East Offset (mm): {:6.0f} Northing Offset (mm): {:6.0f}".format(
                self.Antenna_Height,
                self.East_Offset,
-               self.North_Offset));
-               print("   Position Accuracy: {}".format(self.Position_Accuracy))
+               self.North_Offset)));
+               print(("   Position Accuracy: {}".format(self.Position_Accuracy)))
 
             elif self.message_type == 2:
-               print("   Short Station Name: {}".format(self.Short_Station))
-               print("   Cogo code: {}".format(self.COGO_Code))
-               print("   LongStation Name: {}".format(self.Long_Station))
+               print(("   Short Station Name: {}".format(self.Short_Station)))
+               print(("   Cogo code: {}".format(self.COGO_Code)))
+               print(("   LongStation Name: {}".format(self.Long_Station)))
             else :
-               print("   Type: {}  ID: {}  Version: {}".format(
+               print(("   Type: {}  ID: {}  Version: {}".format(
                self.message_type,
                self.station_ID,
-               self.version_number));
+               self.version_number)));
 

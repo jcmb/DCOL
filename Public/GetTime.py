@@ -32,5 +32,5 @@ class GetTime (DCOL.Dcol) :
     def dump(self,Dump_Level):
 
         if Dump_Level >= Dump_Summary :
-            print(" Subtype Included: {}  Subtype: {}".format(self.Subtype_Included, self.Subtype))
+            print((" Subtype Included: {}  Subtype: {}".format(self.Subtype_Included, self.Subtype)))
 

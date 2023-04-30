@@ -30,6 +30,7 @@ Got_Undecoded=3 # This is not really an undecoded packet but bytes that are not 
 Got_Packet=4
 Got_Sub_Packet=5
 Missing_Sub_Packet=6
+Invalid_Decode=255
 
 
 # ByteToHex From http://code.activestate.com/recipes/510399-byte-to-hex-and-hex-to-byte-string-conversion/

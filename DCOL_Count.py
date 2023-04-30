@@ -55,7 +55,7 @@ parser.add_argument("-R", "--Raw", nargs=1, help="File to Log Raw Data to")
 
 args=parser.parse_args()
 
-#print args
+#print (args)
 
 Dump_Undecoded = args.Undecoded
 Dump_Decoded = args.Decoded
@@ -63,10 +63,10 @@ Dump_TimeStamp = args.Time
 Print_ACK_NAK  = args.ACK
 
 if args.Explain:
-    print("Dump undecoded: {},  Dump Decoded: {},  Dump ACK/NACK: {}, Dump TimeStamp: {}".format(
+    print(("Dump undecoded: {},  Dump Decoded: {},  Dump ACK/NACK: {}, Dump TimeStamp: {}".format(
         Dump_Undecoded,
         Dump_Decoded,
-        Dump_TimeStamp))
+        Dump_TimeStamp)))
 
 
 
@@ -111,19 +111,19 @@ while (new_data):
 #        print str(datetime.now())
         if result == Got_Undecoded :
             if Dump_Undecoded :
-                print("Undecoded Data: " +ByteToHex(dcol.undecoded));
+                print(("Undecoded Data: " +ByteToHex(dcol.undecoded)));
         elif result == Got_Packet :
             dcol.dump(dump_undecoded=Dump_Undecoded,dump_decoded=Dump_Decoded,dump_timestamp=Dump_TimeStamp);
             sys.stdout.flush()
         elif result == Got_Sub_Packet:
             if dcol.Dump_Levels[dcol.packet_ID] :
-                print(dcol.name() + ' ( ' +  hex(dcol.packet_ID) +" ) : ")
+                print((dcol.name() + ' ( ' +  hex(dcol.packet_ID) +" ) : "))
                 print(" Sub packet of mutiple packet message")
                 print("")
                 sys.stdout.flush()
         elif result == Missing_Sub_Packet:
             if dcol.Dump_Levels[dcol.packet_ID] :
-                print(dcol.name() + ' ( ' +  hex(dcol.packet_ID) +" ) : ")
+                print((dcol.name() + ' ( ' +  hex(dcol.packet_ID) +" ) : "))
                 print(" Final sub packet of mutiple packet message, missed a sub packet.")
                 print("")
                 sys.stdout.flush()

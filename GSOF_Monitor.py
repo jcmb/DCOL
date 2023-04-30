@@ -55,11 +55,11 @@ def process_arguments():
     args=parser.parse_args()
 
     if args.Explain:
-        print("Dump undecoded: {},  Dump Decoded: {} Time: {}, Verbose: {}".format(
+        print(("Dump undecoded: {},  Dump Decoded: {} Time: {}, Verbose: {}".format(
             args.Undecoded,
             args.Decoded,
             args.Time,
-            args.Verbose))
+            args.Verbose)))
 
     return(args)
 
@@ -95,7 +95,7 @@ def get_GSOF(dcol,tcp,args):
         while result != 0 :
             if result == Got_Undecoded :
                 if args.Undecoded :
-                    print("Undecoded Primary Data: " +ByteToHex(dcol.undecoded));
+                    print(("Undecoded Primary Data: " +ByteToHex(dcol.undecoded)));
             elif result == Got_Packet :
                 if args.Verbose:
                     dcol.dump(dump_undecoded=args.Undecoded,dump_decoded=args.Decoded,dump_timestamp=args.Time);
@@ -103,13 +103,13 @@ def get_GSOF(dcol,tcp,args):
                 return(dcol.Handlers[GENOUT_TrimComm_Command])
             elif result == Got_Sub_Packet:
                 if args.Verbose>2:
-                    print(dcol.name() + ' ( ' +  hex(dcol.packet_ID) +" ) : ")
+                    print((dcol.name() + ' ( ' +  hex(dcol.packet_ID) +" ) : "))
                     print(" Sub packet of mutiple packet message")
                     print("")
                     sys.stdout.flush()
             elif result == Missing_Sub_Packet:
                 if args.Verbose :
-                    print(dcol.name() + ' ( ' +  hex(dcol.packet_ID) +" ) : ")
+                    print((dcol.name() + ' ( ' +  hex(dcol.packet_ID) +" ) : "))
                     print(" Final sub packet of mutiple packet message, missed a sub packet.")
                     print("")
                     sys.stdout.flush()
@@ -167,10 +167,10 @@ def process_GSOFs(primary,secondary):
             L1_Delta = primary_SVs[SV_System][SV_Number][0]-secondary.SV_Detailed_All[SV][6]/4.0
             L2_Delta = primary_SVs[SV_System][SV_Number][1]-secondary.SV_Detailed_All[SV][7]/4.0
             L5_Delta = primary_SVs[SV_System][SV_Number][2]-secondary.SV_Detailed_All[SV][8]/4.0
-            print ("{},{},{},{},{},{}".format(primary.GPS_Time, GNSS_System_Names[SV_System], SV_Number, L1_Delta,L2_Delta,L5_Delta))
+            print(("{},{},{},{},{},{}".format(primary.GPS_Time, GNSS_System_Names[SV_System], SV_Number, L1_Delta,L2_Delta,L5_Delta)))
 #            print (primary.GPS_Time, GNSS_System_Names[SV_System], SV_Number, L1_Delta,L2_Delta,L5_Delta)
         else:
-            print ("{},{},{},{},{},{}".format(primary.GPS_Time, GNSS_System_Names[SV_System], SV_Number, -99,-99,-99))
+            print(("{},{},{},{},{},{}".format(primary.GPS_Time, GNSS_System_Names[SV_System], SV_Number, -99,-99,-99)))
 
 
 

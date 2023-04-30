@@ -25,7 +25,6 @@ class CMRGlonass (DCOL.Dcol) :
         self.GSP_Data_Bits_Signal=None
 
         self.GLN_SVs=None
-        pass
 
 
 
@@ -46,7 +45,7 @@ class CMRGlonass (DCOL.Dcol) :
           self.GPS_Word_Of_Week<<=16
           self.GPS_Word_Of_Week|=unpacked[2]
           self.GSP_Data_Bits_Known=unpacked[3]
-          self.GSP_Data_Bits_Signal=unpacked[4]
+          self.GSP_Data_Bits_Signal=unpacked[4]          
 
       if self.message_type==28:  # ITRF Offset Message
           unpacked = unpack('>B h h h' ,data)
@@ -62,14 +61,14 @@ class CMRGlonass (DCOL.Dcol) :
 
         if Dump_Level >= Dump_Summary :
            if self.message_type in TSubtype_Names:
-             print("  SubType: {} ({})  ".format(TSubtype_Names[self.message_type],self.message_type))
+             print(("  SubType: {} ({})  ".format(TSubtype_Names[self.message_type],self.message_type)))
            else:
-             print("  Unknown SubType: {}:  ".format(self.message_type))
+             print(("  Unknown SubType: {}:  ".format(self.message_type)))
            if self.message_type==0 :
-              print("    GLN SV's: {}".format(self.GLN_SVs))
+              print(("    GLN SV's: {}".format(self.GLN_SVs)))
 
            if self.message_type==1 :
-              print("    GPS Week: {} GPS_Word_Of_Week: {} Seconds of week: {}".format(self.GPS_Week,self.GPS_Word_Of_Week,self.GPS_Word_Of_Week*0.6))
+              print(("    GPS Week: {} GPS_Word_Of_Week: {} Seconds of week: {:0.2f}".format(self.GPS_Week,self.GPS_Word_Of_Week,self.GPS_Word_Of_Week*0.6)))
            if self.message_type==28 :
-              print("    ITRF_Offset_x: {} ITRF_Offset_y: {} ITRF_Offset_z: {}".format(self.ITRF_Offset_x,self.ITRF_Offset_y,self.ITRF_Offset_z))
+              print(("    ITRF_Offset_x: {} ITRF_Offset_y: {} ITRF_Offset_z: {}".format(self.ITRF_Offset_x,self.ITRF_Offset_y,self.ITRF_Offset_z)))
 
