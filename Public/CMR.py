@@ -51,6 +51,11 @@ class CMR (DCOL.Dcol) :
       self.basePointQuality = None
       self.basePointType  = None
       self.errLocation = None
+      self.trackingDetails=None
+      self.antennaType=None
+      self.antennaMeasure=None
+      self.protocol=None
+
 
 
 
@@ -275,7 +280,7 @@ class CMR (DCOL.Dcol) :
 #      print self.Long_Station
 #      print hexlify(self.Long_Station)
 
-      (self.stationName, self.code, self.basePointQuality, self.basePointType,self.errLocation) = decodeSCStation(self.Long_Station)
+      (self.stationName, self.code, self.basePointQuality, self.basePointType, self.errLocation, self.trackingDetails, self.antennaType, self.antennaMeasure, self.protocol) = decodeSCStation(self.Long_Station)
 
 
 
@@ -386,6 +391,11 @@ class CMR (DCOL.Dcol) :
                   print("      Code: {}".format(self.code))
                   print("      Base Quality: {}".format(self.basePointQuality))
                   print("      Base Type: {}".format(self.basePointType))
+                  print("      Tracking: {}".format(self.trackingDetails))
+                  print("      Antenna ID: {}".format(self.antennaType))
+                  print("      Antenna Measurement: {}".format(self.antennaMeasure))
+                  print("      Protocol: {}".format(self.protocol))
+
                else:
                   print("      Not Encoded: {}".format(self.errLocation))
 
