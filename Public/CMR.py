@@ -45,6 +45,13 @@ class CMR (DCOL.Dcol) :
       self.Short_Station=None
       self.COGO_Code=None
       self.Long_Station=None
+# Decoded from long station. If errLocation is None
+      self.stationName = None
+      self.code = None
+      self.basePointQuality = None
+      self.basePointType  = None
+      self.errLocation = None
+
 
 
    def decode_type_1_2_header(self,data):
@@ -268,6 +275,9 @@ class CMR (DCOL.Dcol) :
 #      print self.Long_Station
 #      print hexlify(self.Long_Station)
 
+      (self.stationName, self.code, self.basePointQuality, self.basePointType,self.errLocation) = decodeSCStation(self.Long_Station)
+
+
 
       return DCOL.Got_Packet
 
@@ -370,6 +380,15 @@ class CMR (DCOL.Dcol) :
                print(("   Short Station Name: {}".format(self.Short_Station)))
                print(("   Cogo code: {}".format(self.COGO_Code)))
                print(("   LongStation Name: {}".format(self.Long_Station)))
+               if self.errLocation == None:
+                  print("      Encoded:")
+                  print("      Station Name: {}".format(self.stationName))
+                  print("      Code: {}".format(self.code))
+                  print("      Base Quality: {}".format(self.basePointQuality))
+                  print("      Base Type: {}".format(self.basePointType))
+               else:
+                  print("      Not Encoded: {}".format(self.errLocation))
+
             else :
                print(("   Type: {}  ID: {}  Version: {}".format(
                self.message_type,
