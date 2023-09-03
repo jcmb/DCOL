@@ -22,6 +22,8 @@ from array import array
 from datetime import datetime
 from pprint import pprint
 
+import sys
+
 
 Need_More=0
 Got_ACK=1
@@ -277,24 +279,75 @@ class Dcol:
         pass
 
     def add_handlers (self,internal):
-        self._add_Handler(SETANT_TrimComm_Command,SetAnt.SetAnt());
-        self._add_Handler(GETTIME_TrimComm_Command, GetTime.GetTime()) #4000 Manual
-        self._add_Handler(RETTIME_TrimComm_Command, RetTime.RetTime()) #4000 Manual
+        try:
+            self._add_Handler(SETANT_TrimComm_Command,SetAnt.SetAnt());
+        except:
+            pass
 
-        self._add_Handler(RECSTAT1_TrimComm_Command,RetStat1.RetStat1());
-        self._add_Handler(RETSERIAL_TrimComm_Command,RetSerial.RetSerial());
-        self._add_Handler(SETCOMMS_TrimComm_Command,SetComms.SetComms());
-        self._add_Handler(GENOUT_TrimComm_Command,GSOF.GSOF());
-        self._add_Handler(CMR_Type_TrimComm_Command,CMR.CMR());
-        self._add_Handler(CMR_PLUS_TrimComm_Command,CMRPlus.CMRPlus());
-        self._add_Handler(BreakRET_TrimComm_Command,RetBreak.RetBreak());
-        self._add_Handler(COMMOUT_TrimComm_Command,CommOut.CommOut());
-        self._add_Handler(SetIdle_TrimComm_Command,SetIdle.SetIdle())
-#        self._add_Handler(AppFile_TrimComm_Command,AppFile.AppFile())
-        self._add_Handler(CMRW_TrimComm_Command,CMRGlonass.CMRGlonass())
+        try:
+            self._add_Handler(GETTIME_TrimComm_Command, GetTime.GetTime()) #4000 Manual
+        except:
+            pass
+
+        try:
+            self._add_Handler(RETTIME_TrimComm_Command, RetTime.RetTime()) #4000 Manual
+        except:
+            pass
 
 
-        if internal :
+        try:
+            self._add_Handler(RECSTAT1_TrimComm_Command,RetStat1.RetStat1());
+        except:
+            pass
+
+        try:
+            self._add_Handler(RETSERIAL_TrimComm_Command,RetSerial.RetSerial());
+        except:
+            pass
+
+        try:
+            self._add_Handler(SETCOMMS_TrimComm_Command,SetComms.SetComms());
+        except:
+            pass
+
+        try:
+            self._add_Handler(GENOUT_TrimComm_Command,GSOF.GSOF());
+        except:
+            pass
+
+        try:
+            self._add_Handler(CMR_Type_TrimComm_Command,CMR.CMR());
+        except:
+            pass
+
+        try:
+            self._add_Handler(CMR_PLUS_TrimComm_Command,CMRPlus.CMRPlus());
+        except:
+            pass
+
+        try:
+            self._add_Handler(BreakRET_TrimComm_Command,RetBreak.RetBreak());
+        except:
+            pass
+
+        try:
+            self._add_Handler(COMMOUT_TrimComm_Command,CommOut.CommOut());
+        except:
+            pass
+
+        try:
+            self._add_Handler(SetIdle_TrimComm_Command,SetIdle.SetIdle())
+        except:
+            pass
+
+    #        self._add_Handler(AppFile_TrimComm_Command,AppFile.AppFile())
+        try:
+            self._add_Handler(CMRW_TrimComm_Command,CMRGlonass.CMRGlonass())
+        except:
+            pass
+
+
+        if internal : # If you are doing it internal we assume you have all the files
 
             self._add_Handler(Station_TrimComm_Command,Station.Station());
             self._add_Handler(RTKSTAT_TrimComm_Command,RTKStat.RTKStat());
@@ -322,6 +375,8 @@ class Dcol:
 
 
     def dump (self,dump_undecoded=False,dump_status=False,dump_decoded=False,dump_timestamp=False):
+#        print("dump")
+#        print(self.Dump_Levels[self.packet_ID])
         if self.Dump_Levels[self.packet_ID] :
             if dump_timestamp :
                print((datetime.now()))
@@ -365,39 +420,174 @@ class Dcol:
                         print((" Packet Data: " + ByteToHex (self.packet)))
                     print("")
 
+try:
+    import RetStat1
+except:
+    sys.stderr.write("INFO: Failed to load RetStat1\n")
 
-import RetStat1
-import RetSerial
-import RTKStat
-import RetRTKStat
-import OmniSTAR
-import SetComms
-import Funnel;
-import RadioPipe
-import GSOF
-import CMR
-import CMRPlus
-import GetBase
-import RetBase
-import RetOpt
-import RetBreak
-import GetOpt
-import SurveyStat
-import Login
-import Station
-import SetAnt
-import GetTime
-import RetTime
-import StartSurvey
-import CommOut
-import Ethernet
-import WiFi
-import SetIdle
-import SBAS
-import CMRGlonass
-import GetSVData
-import RetSVData
-import RTKCtrl
-import KNEX
-import ReqAppFile
-#import AppFile
+try:
+    import RetSerial
+except:
+    sys.stderr.write("INFO: Failed to load RetSerial\n")
+
+try:
+    import RTKStat
+except:
+    sys.stderr.write("INFO: Failed to load RTKStat\n")
+
+try:
+    import RetRTKStat
+except:
+    sys.stderr.write("INFO: Failed to load RetRTKStat\n")
+
+try:
+    import OmniSTAR
+except:
+    sys.stderr.write("INFO: Failed to load OmniSTAR\n")
+
+try:
+    import SetComms
+except:
+    sys.stderr.write("INFO: Failed to load SetComms\n")
+
+try:
+    import Funnel;
+except:
+    sys.stderr.write("INFO: Failed to load Funnel\n")
+
+try:
+    import RadioPipe
+except:
+    sys.stderr.write("INFO: Failed to load RadioPipe\n")
+
+try:
+    import GSOF
+except:
+    sys.stderr.write("INFO: Failed to load GSOF\n")
+
+try:
+    import CMR
+except:
+    sys.stderr.write("INFO: Failed to load CMR\n")
+
+try:
+    import CMRPlus
+except:
+    sys.stderr.write("INFO: Failed to load CMRPlus\n")
+
+try:
+    import GetBase
+except:
+    sys.stderr.write("INFO: Failed to load GetBase\n")
+
+try:
+    import RetBase
+except:
+    sys.stderr.write("INFO: Failed to load RetBase\n")
+
+try:
+    import RetOpt
+except:
+    sys.stderr.write("INFO: Failed to load RetOpt\n")
+
+try:
+    import RetBreak
+except:
+    sys.stderr.write("INFO: Failed to load RetBreak\n")
+
+try:
+    import GetOpt
+except:
+    sys.stderr.write("INFO: Failed to load GeTOpt\n")
+
+try:
+    import SurveyStat
+except:
+    sys.stderr.write("INFO: Failed to load SurveyStat\n")
+
+try:
+    import Login
+except:
+    sys.stderr.write("INFO: Failed to load Login\n")
+
+try:
+    import Station
+except:
+    sys.stderr.write("INFO: Failed to load Station\n")
+
+try:
+    import SetAnt
+except:
+    sys.stderr.write("INFO: Failed to load SetAnt\n")
+
+try:
+    import GetTime
+except:
+    sys.stderr.write("INFO: Failed to load GetTime\n")
+
+try:
+    import RetTime
+except:
+    sys.stderr.write("INFO: Failed to load RetTime\n")
+
+try:
+    import StartSurvey
+except:
+    sys.stderr.write("INFO: Failed to load StartSurvey\n")
+
+try:
+    import CommOut
+except:
+    sys.stderr.write("INFO: Failed to load CommOut\n")
+
+try:
+    import Ethernet
+except:
+    sys.stderr.write("INFO: Failed to load Ethernet\n")
+
+try:
+    import WiFi
+except:
+    sys.stderr.write("INFO: Failed to load WiFi\n")
+
+try:
+    import SetIdle
+except:
+    sys.stderr.write("INFO: Failed to load SetIdle\n")
+
+try:
+    import SBAS
+except:
+    sys.stderr.write("INFO: Failed to load SBAS\n")
+
+try:
+    import CMRGlonass
+except:
+    sys.stderr.write("INFO: Failed to load CMRGlonass\n")
+
+try:
+    import GetSVData
+except:
+    sys.stderr.write("INFO: Failed to load GetSVData\n")
+
+try:
+    import RetSVData
+except:
+    sys.stderr.write("INFO: Failed to load RetSVData\n")
+
+try:
+    import RTKCtrl
+except:
+    sys.stderr.write("INFO: Failed to load RTKCtrl\n")
+
+try:
+    import KNEX
+except:
+    sys.stderr.write("INFO: Failed to load KNEX\n")
+
+try:
+    import ReqAppFile
+except:
+    sys.stderr.write("INFO: Failed to load ReqAppFile\n")
+
+    #import AppFile
