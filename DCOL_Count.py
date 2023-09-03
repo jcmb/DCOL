@@ -8,9 +8,8 @@ import socket
 
 
 sys.path.append("Public"); # Gave up trying to work how to do this with a .pth file or using .
-sys.path.append("/Users/gkirk/Dropbox/Develop/Python/DCOL/Internal")
-sys.path.append("/Users/gkirk/Documents/GitHub/DCOL")
-sys.path.append("/Users/gkirk/Documents/GitHub/DCOL/Public")
+#sys.path.append("/Users/gkirk/Documents/GitHub/DCOL")
+#sys.path.append("/Users/gkirk/Documents/GitHub/DCOL/Public")
 sys.path.append("internal");
 sys.path.append("internal_stubs");
 
@@ -52,6 +51,7 @@ parser.add_argument("-G", "--GNSS", action="store_true", help="Data is from a GN
 parser.add_argument("-W", "--Time", action="store_true", help="Report the time when the packet was received")
 parser.add_argument("-P", "--IP", nargs=2, help="Server Port. Connect via TCP To a device instead of reading from StdIn,")
 parser.add_argument("-R", "--Raw", nargs=1, help="File to Log Raw Data to")
+parser.add_argument("-V", "--Verbose", action="store_true", help="Verbose")
 
 args=parser.parse_args()
 
@@ -61,6 +61,7 @@ Dump_Undecoded = args.Undecoded
 Dump_Decoded = args.Decoded
 Dump_TimeStamp = args.Time
 Print_ACK_NAK  = args.ACK
+Verbose = args.Verbose
 
 if args.Explain:
     print(("Dump undecoded: {},  Dump Decoded: {},  Dump ACK/NACK: {}, Dump TimeStamp: {}".format(
@@ -79,11 +80,13 @@ dcol=Dcol(internal=False,default_output_level=0);
 
 #print args.IP
 if args.IP == None:
-    print("Using Standard Input")
+    if Verbose:
+        print("Using Standard Input", file=sys.stderr)
     Use_TCP=False
     new_data = bytearray(sys.stdin.read(1))
 else:
-    print("Using TCP")
+    if Verbose:
+        print("Using TCP", file=sys.stderr)
     Use_TCP=True
     HOST = args.IP[0]
     PORT = int(args.IP[1])
@@ -97,6 +100,9 @@ if args.Raw:
     Log_Raw=True
     Raw_File=open(args.Raw[0]+".BIN","wb")
 
+Decoded_Packets=0
+UnDecoded_Bytes=0
+
 while (new_data):
     if Log_Raw:
         Raw_File.write(new_data)
@@ -108,11 +114,18 @@ while (new_data):
     result = dcol.process_data (dump_decoded=False)
 
     while result != 0 :
-#        print str(datetime.now())
+#        print(result)
         if result == Got_Undecoded :
+            UnDecoded_Bytes+=1
+            if Verbose:
+                print(f"DCOL Packets Decoded: {Decoded_Packets}  Unknown Bytes:{UnDecoded_Bytes}", file=sys.stderr)
             if Dump_Undecoded :
                 print(("Undecoded Data: " +ByteToHex(dcol.undecoded)));
+
         elif result == Got_Packet :
+            Decoded_Packets+=1
+            if Verbose:
+                print(f"DCOL Packets Decoded: {Decoded_Packets}  Unknown Bytes:{UnDecoded_Bytes}", file=sys.stderr)
             dcol.dump(dump_undecoded=Dump_Undecoded,dump_decoded=Dump_Decoded,dump_timestamp=Dump_TimeStamp);
             sys.stdout.flush()
         elif result == Got_Sub_Packet:
@@ -127,9 +140,14 @@ while (new_data):
                 print(" Final sub packet of mutiple packet message, missed a sub packet.")
                 print("")
                 sys.stdout.flush()
+        elif result == Got_ACK:
+            pass
+        elif result == Got_NACK:
+            pass
         else :
-                print("INTERNAL ERROR: Unknown result")
-                sys.exit();
+            print("INTERNAL ERROR: Unknown result", file=sys.stderr)
+            print("-1")
+            sys.exit();
 #        print "processing"
         result = dcol.process_data ()
 #        print "processed: " + str(result)
@@ -138,10 +156,15 @@ while (new_data):
     else:
         new_data = sys.stdin.read(1)
 
+
 if Use_TCP:
     Remote_TCP.close()
 
 if Log_Raw:
     Raw_File.close()
-print("Bye")
+
+print(Decoded_Packets)
+
+if Verbose:
+    print("Bye", file=sys.stderr)
 
