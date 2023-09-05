@@ -115,7 +115,7 @@ class GSOF (DCOL.Dcol) :
     def __init__ (self):
         self.last_page=-2
         self.max_page=-1
-        self.GSOF_Buffer=bytearray()
+        self.GSOF_Buffer=bytearray([])
         self.seq_number=-1
         self.seen_pages=set([])
         self.seen_subrecords=set([])
@@ -123,7 +123,7 @@ class GSOF (DCOL.Dcol) :
 
 
     def decode(self,data,internal=False):
-        unpacked=unpack_from('> B B B',str(data))
+        unpacked=unpack_from('> B B B',data)
 #        print " Buffer {:02X} {}".format(len(self.GSOF_Buffer),len(self.GSOF_Buffer))
 #        print " GSOF: " + hexlify(self.GSOF_Buffer)
         del data[0:3]
@@ -131,7 +131,7 @@ class GSOF (DCOL.Dcol) :
         if unpacked[0] != self.seq_number:
             self.seq_number=unpacked[0]
             self.seen_pages=set([])
-            self.GSOF_Buffer=bytearray("")
+            self.GSOF_Buffer=bytearray([])
             self.seen_subrecords=set([])
 
 
@@ -150,7 +150,7 @@ class GSOF (DCOL.Dcol) :
 #                print " Buffer Final Buffer {}".format(len(self.GSOF_Buffer))
 #                print hexlify(self.GSOF_Buffer)
                 while self.GSOF_Buffer :
-                    unpacked=unpack_from('> B B',str(self.GSOF_Buffer))
+                    unpacked=unpack_from('> B B',self.GSOF_Buffer)
                     subrecord=unpacked[0];
                     self.seen_subrecords|=set([subrecord])
                     length=unpacked[1]
@@ -163,7 +163,7 @@ class GSOF (DCOL.Dcol) :
  #                   print "GSOF Buffer Length after delete length: " + str(len(self.GSOF_Buffer))
 
                     if subrecord == GSOF_POSITION_TIME :
-                        unpacked=unpack_from('>L H B B B B',str(self.GSOF_Buffer))
+                        unpacked=unpack_from('>L H B B B B',self.GSOF_Buffer)
                         self.GPS_Time=unpacked[0]
                         self.GPS_Week=unpacked[1]
                         self.SVs_Used=unpacked[2]
@@ -172,26 +172,26 @@ class GSOF (DCOL.Dcol) :
                         self.Init_Counter=unpacked[5]
 
                     elif subrecord == GSOF_LAT_LONG_HEIGHT :
-                        unpacked=unpack_from('>d d d',str(self.GSOF_Buffer))
+                        unpacked=unpack_from('>d d d',self.GSOF_Buffer)
                         self.Lat=unpacked[0]
                         self.Long=unpacked[1]
                         self.Height=unpacked[2]
 
                     elif subrecord == GSOF_ECEF_POSITION :
-                        unpacked=unpack_from('>d d d',str(self.GSOF_Buffer))
+                        unpacked=unpack_from('>d d d',self.GSOF_Buffer)
                         self.X=unpacked[0]
                         self.Y=unpacked[1]
                         self.Z=unpacked[2]
 
                     elif subrecord == GSOF_LOCAL_DATUM_POSITION :
-                        unpacked=unpack_from('> 8S d d d',str(self.GSOF_Buffer))
+                        unpacked=unpack_from('> 8S d d d',self.GSOF_Buffer)
                         self.Datum_ID=unpacked[0]
                         self.Local_Lat=unpacked[1]
                         self.Local_Long=unpacked[2]
                         self.Local_Height=unpacked[3]
 
                     elif subrecord == GSOF_LOCAL_ZONE_POSITION :
-                        unpacked=unpack_from('> 8s 8s d d d',str(self.GSOF_Buffer))
+                        unpacked=unpack_from('> 8s 8s d d d',self.GSOF_Buffer)
                         self.Datum_ID=unpacked[0]
                         self.Zone_ID=unpacked[1]
                         self.Local_North=unpacked[2]
@@ -199,13 +199,13 @@ class GSOF (DCOL.Dcol) :
                         self.Local_Elev=unpacked[4]
 
                     elif subrecord == GSOF_ECEF_DELTA :
-                        unpacked=unpack_from('>d d d',str(self.GSOF_Buffer))
+                        unpacked=unpack_from('>d d d',self.GSOF_Buffer)
                         self.dX=unpacked[0]
                         self.dY=unpacked[1]
                         self.dZ=unpacked[2]
 
                     elif subrecord == GSOF_TANGENT_PLANE_DELTA :
-                        unpacked=unpack_from('>d d d',str(self.GSOF_Buffer))
+                        unpacked=unpack_from('>d d d',self.GSOF_Buffer)
                         self.dE=unpacked[0]
                         self.dN=unpacked[1]
                         self.dU=unpacked[2]
@@ -213,14 +213,14 @@ class GSOF (DCOL.Dcol) :
 
                     elif subrecord == GSOF_VELOCITY_DATA :
                         if length == 0x11 :
-                           unpacked=unpack_from('>B f f f f',str(self.GSOF_Buffer))
+                           unpacked=unpack_from('>B f f f f',self.GSOF_Buffer)
                            self.Velocity_Flags=unpacked[0]
                            self.Velocity=unpacked[1]
                            self.Heading=unpacked[2]
                            self.Vertical_Velocity=unpacked[3]
                            self.Local_Heading=unpacked[4]
                         else:
-                           unpacked=unpack_from('>B f f f',str(self.GSOF_Buffer))
+                           unpacked=unpack_from('>B f f f',self.GSOF_Buffer)
                            self.Velocity_Flags=unpacked[0]
                            self.Velocity=unpacked[1]
                            self.Heading=unpacked[2]
@@ -228,20 +228,20 @@ class GSOF (DCOL.Dcol) :
                            self.Local_Heading=None
 
                     elif subrecord == GSOF_PDOP_INFO :
-                        unpacked=unpack_from('>f f f f',str(self.GSOF_Buffer))
+                        unpacked=unpack_from('>f f f f',self.GSOF_Buffer)
                         self.PDOP=unpacked[0]
                         self.HDOP=unpacked[1]
                         self.TDOP=unpacked[2]
                         self.VDOP=unpacked[3]
 
                     elif subrecord == GSOF_CLOCK_INFO :
-                        unpacked=unpack_from('>B d d',str(self.GSOF_Buffer))
+                        unpacked=unpack_from('>B d d',self.GSOF_Buffer)
                         self.clock_flags=unpacked[0]
                         self.clock_offset=unpacked[1]
                         self.frequency_offset=unpacked[2]
 
                     elif subrecord == GSOF_POSITION_VCV_INFO :
-                        unpacked=unpack_from('>f f f f f f f f H',str(self.GSOF_Buffer))
+                        unpacked=unpack_from('>f f f f f f f f H',self.GSOF_Buffer)
                         POSITION_RMS=unpacked[0]
                         VCV_xx=unpacked[1]
                         VCV_xy=unpacked[2]
@@ -254,7 +254,7 @@ class GSOF (DCOL.Dcol) :
 
 
                     elif subrecord == GSOF_POSITION_SIGMA_INFO :
-                        unpacked=unpack_from('>f f f f f f f f f  H',str(self.GSOF_Buffer))
+                        unpacked=unpack_from('>f f f f f f f f f  H',self.GSOF_Buffer)
                         self.POSITION_RMS = unpacked[0]
                         self.SIGMA_EAST = unpacked[1]
                         self.SIGMA_NORTH = unpacked[2]
@@ -278,7 +278,7 @@ class GSOF (DCOL.Dcol) :
                         self.SV_Brief={}
                         if self.Brief_Num_SVs:
                             for SV in range(0,self.Brief_Num_SVs):
-                                unpacked=unpack_from('>B B B',str(SV_Brief_Buffer))
+                                unpacked=unpack_from('>B B B',SV_Brief_Buffer)
                                 del SV_Brief_Buffer[0:calcsize('>B B B')]
                                 self.SV_Brief[SV]=unpacked
 #                                print "  {:02X}".format(len(SV_Brief_Buffer))
@@ -300,24 +300,24 @@ class GSOF (DCOL.Dcol) :
  #                               print "SV: " + str(SV) + " " + str(1+(calcsize('>B B B B H B B')*SV))
  #                               print len(SV_Detail_Buffer)
  #                               print hexlify(SV_Detail_Buffer)
-                                unpacked=unpack_from('>B B B b H B B',str(SV_Detail_Buffer))
+                                unpacked=unpack_from('>B B B b H B B',SV_Detail_Buffer)
                                 del SV_Detail_Buffer[0:calcsize('>B B B b H B B')]
                                 self.SV_Detailed[SV]=unpacked
 #                                print unpacked
 
                     elif subrecord == GSOF_RECEIVER_SERIAL_NUMBER :
-                        unpacked=unpack_from('>L',str(self.GSOF_Buffer))
+                        unpacked=unpack_from('>L',self.GSOF_Buffer)
                         self.Serial_Number = unpacked[0]
 
                     elif subrecord == GSOF_CURRENT_TIME_INFORMATION :
-                        unpacked=unpack_from('>L H H B',str(self.GSOF_Buffer))
+                        unpacked=unpack_from('>L H H B',self.GSOF_Buffer)
                         self.Current_TIME = unpacked[0]
                         self.Current_WEEK = unpacked[1]
                         self.Current_UTC_OFFSET = unpacked[2]
                         self.Current_Time_FLAGS = unpacked[3]
 
                     elif subrecord == GSOF_POSITION_TIME_UTC :
-                        unpacked=unpack_from('>L H B B B',str(self.GSOF_Buffer))
+                        unpacked=unpack_from('>L H B B B',self.GSOF_Buffer)
                         self.UTC_TIME = unpacked[0]
                         self.UTC_WEEK = unpacked[1]
                         self.UTC_Number_of_SVs = unpacked[2]
@@ -326,7 +326,7 @@ class GSOF (DCOL.Dcol) :
                         self.UTC_Init_Counter = "N/A"
 
                     elif subrecord == GSOF_ATTITUDE_INFO : # = 27
-                        unpacked=unpack_from('>L B B B B d d d d H f f f f',str(self.GSOF_Buffer))
+                        unpacked=unpack_from('>L B B B B d d d d H f f f f',self.GSOF_Buffer)
                         self.ATTITUDE_GPS_TIME = unpacked[0]
                         self.ATTITUDE_Flags = unpacked[1]
                         self.ATTITUDE_Num_SVs = unpacked[2]
@@ -355,7 +355,7 @@ class GSOF (DCOL.Dcol) :
                         self.SV_All_Brief={}
                         if self.Brief_All_Num_SVs:
                             for SV in range(0,self.Brief_All_Num_SVs):
-                                unpacked=unpack_from('>B B B B',str(SV_Brief_Buffer))
+                                unpacked=unpack_from('>B B B B',SV_Brief_Buffer)
                                 del SV_Brief_Buffer[0:calcsize('>B B B B')]
                                 self.SV_All_Brief[SV]=unpacked
 #                                print "  {:02X}".format(len(SV_Brief_Buffer))
@@ -377,13 +377,13 @@ class GSOF (DCOL.Dcol) :
  #                               print "SV: " + str(SV) + " " + str(1+(calcsize('>B B B B H B B')*SV))
  #                               print len(SV_Detail_Buffer)
  #                               print hexlify(SV_Detail_Buffer)
-                                unpacked=unpack_from('>B B B B b H B B B',str(SV_Detail_Buffer))
+                                unpacked=unpack_from('>B B B B b H B B B',SV_Detail_Buffer)
                                 del SV_Detail_Buffer[0:calcsize('>B B B B b H B B B')]
                                 self.SV_Detailed_All[SV]=unpacked
 #                                print unpacked
 
                     elif subrecord == GSOF_ReceivedBaseInfo : # 35 #// * 35 Received base information */
-                        unpacked=unpack_from('>B 8s H d d d',str(self.GSOF_Buffer))
+                        unpacked=unpack_from('>B 8s H d d d',self.GSOF_Buffer)
                         self.Received_Base_Flags=unpacked[0]
                         self.Received_Base_Name=unpacked[1]
                         self.Received_Base_ID=unpacked[2]
@@ -392,12 +392,12 @@ class GSOF (DCOL.Dcol) :
                         self.Received_Base_Height=float(unpacked[5])
 
                     elif subrecord == GSOF_BatteryMemoryInfo : # 37  Memory Battery */
-                        unpacked=unpack_from('>H d',str(self.GSOF_Buffer))
+                        unpacked=unpack_from('>H d',self.GSOF_Buffer)
                         self.Battery_Capacity=unpacked[0]
                         self.Memory_Left=unpacked[1]
 
                     elif subrecord == GSOF_RtkErrorScale:
-                        unpacked=unpack_from('>f B B f B',str(self.GSOF_Buffer))
+                        unpacked=unpack_from('>f B B f B',self.GSOF_Buffer)
                         self.error_Scale=unpacked[0]
                         self.solution_Flags=unpacked[1]
                         self.RTK_Condition=unpacked[2]
@@ -406,7 +406,7 @@ class GSOF (DCOL.Dcol) :
 
 
                     elif subrecord == GSOF_SV_Correction_Beam_Status_Info: # 40
-                        unpacked=unpack_from('>5s f H f B B B B B f f B f f L L L L L L B d',str(self.GSOF_Buffer))
+                        unpacked=unpack_from('>5s f H f B B B B B f f B f f L L L L L L B d',self.GSOF_Buffer)
                         self.beam_info=unpacked
                         self.beam_SV_Name=unpacked[0]
                         self.beam_Freq=unpacked[1]
@@ -433,7 +433,7 @@ class GSOF (DCOL.Dcol) :
 
 
                     elif subrecord == GSOF_Base_Position_Quaility :
-                        unpacked=unpack_from('>L H d d d B',str(self.GSOF_Buffer))
+                        unpacked=unpack_from('>L H d d d B',self.GSOF_Buffer)
                         self.Base_GPS_Time=unpacked[0]
                         self.Base_GPS_Week=unpacked[1]
                         self.Base_Lat=unpacked[2]
@@ -447,7 +447,7 @@ class GSOF (DCOL.Dcol) :
 #                        print "Start of decode"
 #                        print "GSOF Buffer Length: " + str(len(self.GSOF_Buffer))
 #                        print "sub: {} Length: {:02X}".format (subrecord,length);
-                        SV_Detail_Buffer=bytearray()
+                        SV_Detail_Buffer=bytearray([])
                         SV_Detail_Buffer[:]=self.GSOF_Buffer
                         self.Multi_Page_Version=SV_Detail_Buffer[0]
                         del SV_Detail_Buffer[0]
@@ -469,7 +469,7 @@ class GSOF (DCOL.Dcol) :
 #                                print "SV: " + str(SV) + " " + str(1+(calcsize('>B B B B H B B')*SV))
  #                               print len(SV_Detail_Buffer)
  #                               print hexlify(SV_Detail_Buffer)
-                                unpacked=unpack_from('>B B B B b H B B B',str(SV_Detail_Buffer))
+                                unpacked=unpack_from('>B B B B b H B B B',SV_Detail_Buffer)
                                 del SV_Detail_Buffer[0:calcsize('>B B B B b H B B B')]
                                 self.SV_Detailed_All[SV]=unpacked
 #                                print unpacked
