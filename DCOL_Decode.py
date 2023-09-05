@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import sys
 import argparse
@@ -42,7 +42,7 @@ class ArgParser(argparse.ArgumentParser):
 parser = ArgParser(
             description='Trimble Data Collector (DCOL) packet decoder',
             fromfile_prefix_chars='@',
-            epilog="(c) JCMBsoft 2013-2014")
+            epilog="(c) JCMBsoft 2013-2023")
 
 parser.add_argument("-A", "--ACK", action="store_true", help="Displays ACK/NACK replies")
 parser.add_argument("-U", "--Undecoded", action="store_true", help="Displays Undecoded Packets")

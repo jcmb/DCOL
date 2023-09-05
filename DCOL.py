@@ -420,174 +420,177 @@ class Dcol:
                         print((" Packet Data: " + ByteToHex (self.packet)))
                     print("")
 
+
+verbose=False
+
 try:
     import RetStat1
 except:
-    sys.stderr.write("INFO: Failed to load RetStat1\n")
+    if verbose: sys.stderr.write("INFO: Failed to load RetStat1\n")
 
 try:
     import RetSerial
 except:
-    sys.stderr.write("INFO: Failed to load RetSerial\n")
+    if verbose: sys.stderr.write("INFO: Failed to load RetSerial\n")
 
 try:
     import RTKStat
 except:
-    sys.stderr.write("INFO: Failed to load RTKStat\n")
+    if verbose: sys.stderr.write("INFO: Failed to load RTKStat\n")
 
 try:
     import RetRTKStat
 except:
-    sys.stderr.write("INFO: Failed to load RetRTKStat\n")
+    if verbose: sys.stderr.write("INFO: Failed to load RetRTKStat\n")
 
 try:
     import OmniSTAR
 except:
-    sys.stderr.write("INFO: Failed to load OmniSTAR\n")
+    if verbose: sys.stderr.write("INFO: Failed to load OmniSTAR\n")
 
 try:
     import SetComms
 except:
-    sys.stderr.write("INFO: Failed to load SetComms\n")
+    if verbose: sys.stderr.write("INFO: Failed to load SetComms\n")
 
 try:
     import Funnel;
 except:
-    sys.stderr.write("INFO: Failed to load Funnel\n")
+    if verbose: sys.stderr.write("INFO: Failed to load Funnel\n")
 
 try:
     import RadioPipe
 except:
-    sys.stderr.write("INFO: Failed to load RadioPipe\n")
+    if verbose: sys.stderr.write("INFO: Failed to load RadioPipe\n")
 
 try:
     import GSOF
 except:
-    sys.stderr.write("INFO: Failed to load GSOF\n")
+    if verbose: sys.stderr.write("INFO: Failed to load GSOF\n")
 
 try:
     import CMR
 except:
-    sys.stderr.write("INFO: Failed to load CMR\n")
+    if verbose: sys.stderr.write("INFO: Failed to load CMR\n")
 
 try:
     import CMRPlus
 except:
-    sys.stderr.write("INFO: Failed to load CMRPlus\n")
+    if verbose: sys.stderr.write("INFO: Failed to load CMRPlus\n")
 
 try:
     import GetBase
 except:
-    sys.stderr.write("INFO: Failed to load GetBase\n")
+    if verbose: sys.stderr.write("INFO: Failed to load GetBase\n")
 
 try:
     import RetBase
 except:
-    sys.stderr.write("INFO: Failed to load RetBase\n")
+    if verbose: sys.stderr.write("INFO: Failed to load RetBase\n")
 
 try:
     import RetOpt
 except:
-    sys.stderr.write("INFO: Failed to load RetOpt\n")
+    if verbose: sys.stderr.write("INFO: Failed to load RetOpt\n")
 
 try:
     import RetBreak
 except:
-    sys.stderr.write("INFO: Failed to load RetBreak\n")
+    if verbose: sys.stderr.write("INFO: Failed to load RetBreak\n")
 
 try:
     import GetOpt
 except:
-    sys.stderr.write("INFO: Failed to load GeTOpt\n")
+    if verbose: sys.stderr.write("INFO: Failed to load GeTOpt\n")
 
 try:
     import SurveyStat
 except:
-    sys.stderr.write("INFO: Failed to load SurveyStat\n")
+    if verbose: sys.stderr.write("INFO: Failed to load SurveyStat\n")
 
 try:
     import Login
 except:
-    sys.stderr.write("INFO: Failed to load Login\n")
+    if verbose: sys.stderr.write("INFO: Failed to load Login\n")
 
 try:
     import Station
 except:
-    sys.stderr.write("INFO: Failed to load Station\n")
+    if verbose: sys.stderr.write("INFO: Failed to load Station\n")
 
 try:
     import SetAnt
 except:
-    sys.stderr.write("INFO: Failed to load SetAnt\n")
+    if verbose: sys.stderr.write("INFO: Failed to load SetAnt\n")
 
 try:
     import GetTime
 except:
-    sys.stderr.write("INFO: Failed to load GetTime\n")
+    if verbose: sys.stderr.write("INFO: Failed to load GetTime\n")
 
 try:
     import RetTime
 except:
-    sys.stderr.write("INFO: Failed to load RetTime\n")
+    if verbose: sys.stderr.write("INFO: Failed to load RetTime\n")
 
 try:
     import StartSurvey
 except:
-    sys.stderr.write("INFO: Failed to load StartSurvey\n")
+    if verbose: sys.stderr.write("INFO: Failed to load StartSurvey\n")
 
 try:
     import CommOut
 except:
-    sys.stderr.write("INFO: Failed to load CommOut\n")
+    if verbose: sys.stderr.write("INFO: Failed to load CommOut\n")
 
 try:
     import Ethernet
 except:
-    sys.stderr.write("INFO: Failed to load Ethernet\n")
+    if verbose: sys.stderr.write("INFO: Failed to load Ethernet\n")
 
 try:
     import WiFi
 except:
-    sys.stderr.write("INFO: Failed to load WiFi\n")
+    if verbose: sys.stderr.write("INFO: Failed to load WiFi\n")
 
 try:
     import SetIdle
 except:
-    sys.stderr.write("INFO: Failed to load SetIdle\n")
+    if verbose: sys.stderr.write("INFO: Failed to load SetIdle\n")
 
 try:
     import SBAS
 except:
-    sys.stderr.write("INFO: Failed to load SBAS\n")
+    if verbose: sys.stderr.write("INFO: Failed to load SBAS\n")
 
 try:
     import CMRGlonass
 except:
-    sys.stderr.write("INFO: Failed to load CMRGlonass\n")
+    if verbose: sys.stderr.write("INFO: Failed to load CMRGlonass\n")
 
 try:
     import GetSVData
 except:
-    sys.stderr.write("INFO: Failed to load GetSVData\n")
+    if verbose: sys.stderr.write("INFO: Failed to load GetSVData\n")
 
 try:
     import RetSVData
 except:
-    sys.stderr.write("INFO: Failed to load RetSVData\n")
+    if verbose: sys.stderr.write("INFO: Failed to load RetSVData\n")
 
 try:
     import RTKCtrl
 except:
-    sys.stderr.write("INFO: Failed to load RTKCtrl\n")
+    if verbose: sys.stderr.write("INFO: Failed to load RTKCtrl\n")
 
 try:
     import KNEX
 except:
-    sys.stderr.write("INFO: Failed to load KNEX\n")
+    if verbose: sys.stderr.write("INFO: Failed to load KNEX\n")
 
 try:
     import ReqAppFile
 except:
-    sys.stderr.write("INFO: Failed to load ReqAppFile\n")
+    if verbose: sys.stderr.write("INFO: Failed to load ReqAppFile\n")
 
     #import AppFile

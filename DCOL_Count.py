@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import sys
 import argparse
@@ -41,7 +41,7 @@ class ArgParser(argparse.ArgumentParser):
 parser = ArgParser(
             description='Trimble Data Collector (DCOL) packet counter',
             fromfile_prefix_chars='@',
-            epilog="(c) JCMBsoft 2013-2020")
+            epilog="(c) JCMBsoft 2013-2023")
 
 parser.add_argument("-A", "--ACK", action="store_true", help="Displays ACK/NACK replies")
 parser.add_argument("-U", "--Undecoded", action="store_true", help="Displays Undecoded Packets")
@@ -83,7 +83,7 @@ if args.IP == None:
     if Verbose:
         print("Using Standard Input", file=sys.stderr)
     Use_TCP=False
-    new_data = bytearray(sys.stdin.read(1))
+    new_data = bytearray(sys.stdin.buffer.read(1))
 else:
     if Verbose:
         print("Using TCP", file=sys.stderr)
@@ -154,7 +154,7 @@ while (new_data):
     if Use_TCP:
         new_data = Remote_TCP.recv(1)
     else:
-        new_data = sys.stdin.read(1)
+        new_data = sys.stdin.buffer.read(1)
 
 
 if Use_TCP:
