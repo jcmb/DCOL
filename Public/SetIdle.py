@@ -36,7 +36,7 @@ class SetIdle (DCOL.Dcol) :
 
 
    def decode(self,data,internal=False):
-      unpacked = unpack('>H B B B B B B d',str(data))
+      unpacked = unpack('>H B B B B B B d',data)
       del data[0:calcsize('> H B B B B B B d')]
 
       self.Epoch_Interval = unpacked[0]
@@ -49,22 +49,22 @@ class SetIdle (DCOL.Dcol) :
       self.Height         = unpacked[7]
 
       if data:
-         unpacked = unpack('>H',str(data))
+         unpacked = unpack('>H',data)
          del data[0:calcsize('> H')]
          self.GPS_Corr_Age=unpacked[0]
 
       if data:
-         unpacked = unpack('>H',str(data))
+         unpacked = unpack('>H',data)
          del data[0:calcsize('> H')]
          self.GLN_Corr_Age=unpacked[0]
 
       if data:
-         unpacked = unpack('>H',str(data))
+         unpacked = unpack('>H',data)
          del data[0:calcsize('> H')]
          self.GAL_Corr_Age=unpacked[0]
 
       if data:
-         unpacked = unpack('>H',str(data))
+         unpacked = unpack('>H',data)
          del data[0:calcsize('> H')]
          self.BDS_Corr_Age=unpacked[0]
 
