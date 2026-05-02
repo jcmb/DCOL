@@ -24,8 +24,9 @@ class RetBreak (DCOL.Dcol) :
 
 
     def decode(self,data,internal=False):
-        self.breakString = unpack('>' + str(len(data)) + 's' ,str(data))[0]
-        line=self.breakString
+        self.breakString = unpack('>' + str(len(data)) + 's' ,data)[0]
+        line=self.breakString.decode("ascii")
+        print(line)
         (s,sep,line) = line.partition(';')
         (s,sep,self.Product)= s.partition(',')
         (s,sep,line) = line.partition(';')
