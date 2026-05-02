@@ -1,9 +1,11 @@
 
 from DCOL_Decls import *
 from base64 import b64decode, standard_b64decode
+from pprint import pprint
 
 
 def decodeSCStation (longStation):
+#    print("decodeSCStation " + longStation)
 
     stationName=None
     code=None
@@ -31,11 +33,9 @@ def decodeSCStation (longStation):
     elif longStation[len(longStation)-1] != "@":
         errLocation=-1
 
-#    print(len(longStation))
-#    print(longStation[42])
 
     if errLocation != None:
-        return( stationName, code, basePointQuality, basePointType,errLocation)
+        return( stationName, code, basePointQuality, basePointType,errLocation, trackingDetails, antennaType, antennaMeasure, protocol)
 
     if longStation[1] == "A":
         stationName=longStation[2:18]
@@ -45,6 +45,7 @@ def decodeSCStation (longStation):
 
     basePointQuality=longStation[40]
     basePointType=longStation[41]
+#    print("basePointType " + basePointType)
 
     if len(longStation)==50:
         trackingDetails_char=longStation[42]
@@ -70,6 +71,6 @@ def decodeSCStation (longStation):
         antennaMeasure=longStation[45]
         protocol=longStation[46]
 
+#    pprint (stationName, code, basePointQuality, basePointType, errLocation, trackingDetails, antennaType, antennaMeasure, protocol)
 
-
-    return( stationName, code, basePointQuality, basePointType, errLocation, trackingDetails, antennaType, antennaMeasure, protocol)
+    return (stationName, code, basePointQuality, basePointType, errLocation, trackingDetails, antennaType, antennaMeasure, protocol)
