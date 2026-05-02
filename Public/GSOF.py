@@ -27,6 +27,8 @@ GSOF_CURRENT_TIME_INFORMATION = 16
 
 GSOF_POSITION_TIME_UTC = 26
 GSOF_ATTITUDE_INFO = 27
+GSOF_MASTER_RECEIVER = 28
+
 GSOF_BriefAllSVInfo = 33 # // * 33 Brief satellite information */
 GSOF_DetailedAllSVInfo = 34 # // * 34 Detailed satellite information */
 GSOF_ReceivedBaseInfo = 35 # // * 35 Received base information */
@@ -65,7 +67,7 @@ GSOF_Message_Names=  ('Unknown',
     'Reserved 25',
     'POSITION TIME UTC (Obsolete)',
     'ATTITUDE INFO',
-    'Reserved 28',
+    'MASTER RECEIVER',
     'Reserved 29',
     'Reserved 30',
     'Reserved 31',
@@ -326,7 +328,7 @@ class GSOF (DCOL.Dcol) :
                         self.UTC_Init_Counter = "N/A"
 
                     elif subrecord == GSOF_ATTITUDE_INFO : # = 27
-                        unpacked=unpack_from('>L B B B B d d d d H f f f f',self.GSOF_Buffer)
+                        unpacked=unpack_from('>L B B B B d d d d H f f f f f f f',self.GSOF_Buffer)
                         self.ATTITUDE_GPS_TIME = unpacked[0]
                         self.ATTITUDE_Flags = unpacked[1]
                         self.ATTITUDE_Num_SVs = unpacked[2]
@@ -340,7 +342,30 @@ class GSOF (DCOL.Dcol) :
                         self.ATTITUDE_Pitch_Variance = unpacked[10]
                         self.ATTITUDE_Yaw_Variance = unpacked[11]
                         self.ATTITUDE_Roll_Variance = unpacked[12]
-                        self.ATTITUDE_Range_Variance = unpacked[13]
+                        self.ATTITUDE_Pitch_Yaw_Variance = unpacked[11]
+                        self.ATTITUDE_Yaw_Roll_Variance = unpacked[12]
+                        self.ATTITUDE_Yaw_Roll_Variance = unpacked[13]
+                        self.ATTITUDE_Range_Variance = unpacked[14]
+
+                    elif subrecord == GSOF_MASTER_RECEIVER:
+                        unpacked=unpack_from('>B B 3B B B B B B B B B B B B B B',self.GSOF_Buffer)
+                        self.DIAG_RF_FLAGS = unpacked[0]
+                        self.DIAG_CHANNELS = unpacked[1]
+                        self.DIAG_TRACKING = unpacked[2] << 16 | unpacked[3] << 8  | unpacked[4]
+                        self.DIAG_BASE_FLAGS = unpacked[5]
+                        self.DIAG_LINK_100 = unpacked[6]
+                        self.DIAG_LINK_1000 = unpacked[7]
+                        self.DIAG_LINK_10000 = unpacked[8]
+                        self.DIAG_COMMON_L1 = unpacked[9]
+                        self.DIAG_COMMON_L2 = unpacked[10]
+                        self.DIAG_DATALINK_LATENCY = unpacked[11]/10
+                        self.DIAG_DIFF_TYPE = unpacked[12]
+                        self.DIAG_DIFF_SVs = unpacked[13]
+                        self.DIAG_RTK_POS_FAULT = unpacked[14]
+                        self.DIAG_RTK_SEARCH_FAULT = unpacked[15]
+                        self.DIAG_POS_LATENCY = unpacked[16]/10
+                        self.DIAG_RESERVED = unpacked[17]
+
 
 
                     elif subrecord == GSOF_BriefAllSVInfo:
@@ -500,7 +525,7 @@ class GSOF (DCOL.Dcol) :
         if Dump_Level >= Dump_ID :
             for subrecord in self.seen_subrecords :
 #                print " Subrecord: {}".format(subrecord);
-                print((" Subrecord: {:02} {}".format(subrecord,GSOF_Message_Names[subrecord])));
+                print((" Subrecord: {:02} {} Seq:{}".format(subrecord,GSOF_Message_Names[subrecord],self.seq_number)));
                 if Dump_Level >= Dump_Summary:
 
                     if subrecord == GSOF_POSITION_TIME :
@@ -566,20 +591,23 @@ class GSOF (DCOL.Dcol) :
                         else:
                            Velocity_Computed="Doppler"
 
+                        Heading_Valid = self.Velocity_Flags & Bit2 !=0
                         if self.Local_Heading :
-                           print(("  Heading: {:0.6f}  Velocity: {:0.4f}  Vertical_Velocity: {:0.4f}  Local_Heading: {:0.6f}\n  Velocity Valid: {:s}  Computed: {:s}".format(
+                           print(("  Heading: {:0.6f}  Velocity: {:0.4f}  Vertical_Velocity: {:0.4f}  Local_Heading: {:0.6f}\n  Heading Valid: {:s} Velocity Valid: {:s}  Computed: {:s}".format(
                            math.degrees(self.Heading),
                            self.Velocity,
                            self.Vertical_Velocity,
                            self.Local_Heading,
+                           str(Heading_Valid),
                            str(Velocity_Valid),
                            str(Velocity_Computed)
                            )));
                         else:
-                           print(("  Heading: {:0.6f}  Velocity: {:0.4f}  Vertical_Velocity: {:0.4f}\n  Velocity Valid: {:s}  Computed: {:s}".format(
+                           print(("  Heading: {:0.6f}  Velocity: {:0.4f}  Vertical_Velocity: {:0.4f}\n   Heading Valid: {:s} Velocity Valid: {:s}  Computed: {:s}".format(
                            math.degrees(self.Heading),
                            self.Velocity,
                            self.Vertical_Velocity,
+                           str(Heading_Valid),
                            str(Velocity_Valid),
                            str(Velocity_Computed)
                            )));
@@ -738,7 +766,37 @@ class GSOF (DCOL.Dcol) :
                               self.ATTITUDE_Flags & Bit4 != 0
                               )))
 
-                    if subrecord == GSOF_BriefAllSVInfo:
+                    elif subrecord == GSOF_MASTER_RECEIVER : # = 28
+                        print("   RF_FLAGS: {:02X}  Channels: {}  Tracking: {:06X} Base: {:02X} ".format(
+                            self.DIAG_RF_FLAGS,
+                            self.DIAG_CHANNELS,
+                            self.DIAG_TRACKING,
+                            self.DIAG_BASE_FLAGS))
+
+                        print("   Link 100: {}  Link 1000: {}  Link 10000: {} ".format(
+                            self.DIAG_LINK_100,
+                            self.DIAG_LINK_1000,
+                            self.DIAG_LINK_10000))
+
+                        print("   Common L1: {}  Common L2: {} Base qObs Latency {} Pos Latency {}".format(
+                            self.DIAG_COMMON_L1,
+                            self.DIAG_COMMON_L2,
+                            self.DIAG_DATALINK_LATENCY,
+                            self.DIAG_POS_LATENCY
+                            ))
+
+                        print("   Diff Type: {}  Diff SVs {} ".format(
+                            self.DIAG_DIFF_TYPE,
+                            self.DIAG_DIFF_SVs
+                            ))
+
+                        print("   Pos Fault: {}  Search Fault {} Reserved {}".format(
+                            self.DIAG_RTK_POS_FAULT,
+                            self.DIAG_RTK_SEARCH_FAULT,
+                            self.DIAG_RESERVED
+                            ))
+
+                    elif subrecord == GSOF_BriefAllSVInfo:
                         print(("  Number of SV's: " + str(self.Brief_All_Num_SVs)))
                         if Dump_Level == Dump_Full :
                             for SV in range(0,self.Brief_All_Num_SVs):
