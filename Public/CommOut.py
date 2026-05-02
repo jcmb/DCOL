@@ -102,7 +102,7 @@ class CommOut (DCOL.Dcol) :
 
 
     def decode(self,data,internal=False):
-        unpacked = unpack_from('>B B B H' ,str(data))
+        unpacked = unpack_from('>B B B H' ,data)
         del data[0:calcsize('> B B B H')]
         self.Port_Number=unpacked[0]
         self.On_Off=unpacked[1]
@@ -116,27 +116,27 @@ class CommOut (DCOL.Dcol) :
         self.Extras2=None
 
         if data:
-           unpacked = unpack_from('>B' ,str(data))
+           unpacked = unpack_from('>B' ,data)
            del data[0:calcsize('> B')]
            self.Flags1=unpacked[0]
 
         if data:
-           unpacked = unpack_from('>B' ,str(data))
+           unpacked = unpack_from('>B' ,data)
            del data[0:calcsize('> B')]
            self.Flags2=unpacked[0]
 
         if data:
-           unpacked = unpack_from('>B' ,str(data))
+           unpacked = unpack_from('>B' ,data)
            del data[0:calcsize('> B')]
            self.Extras0=unpacked[0]
 
         if data:
-           unpacked = unpack_from('>B' ,str(data))
+           unpacked = unpack_from('>B' ,data)
            del data[0:calcsize('> B')]
            self.Extras1=unpacked[0]
 
         if data:
-           unpacked = unpack_from('>B' ,str(data))
+           unpacked = unpack_from('>B' ,data)
            del data[0:calcsize('> B')]
            self.Extras2=unpacked[0]
 
