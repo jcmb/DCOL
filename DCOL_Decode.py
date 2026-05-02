@@ -42,7 +42,7 @@ class ArgParser(argparse.ArgumentParser):
 parser = ArgParser(
             description='Trimble Data Collector (DCOL) packet decoder',
             fromfile_prefix_chars='@',
-            epilog="(c) JCMBsoft 2013-2023")
+            epilog="(c) JCMBsoft 2013-2024")
 
 parser.add_argument("-A", "--ACK", action="store_true", help="Displays ACK/NACK replies")
 parser.add_argument("-U", "--Undecoded", action="store_true", help="Displays Undecoded Packets")
@@ -59,6 +59,7 @@ parser.add_argument("-G", "--GNSS", action="store_true", help="Data is from a GN
 parser.add_argument("-W", "--Time", action="store_true", help="Report the time when the packet was received")
 parser.add_argument("-P", "--IP", nargs=2, help="Server Port. Connect via TCP To a device instead of reading from StdIn,")
 parser.add_argument("-R", "--Raw", nargs=1, help="File to Log Raw Data to")
+parser.add_argument("--Status", action="store_true",  help="Display status byte information")
 
 args=parser.parse_args()
 
@@ -68,6 +69,7 @@ Dump_Undecoded = args.Undecoded
 Dump_Decoded = args.Decoded
 Dump_TimeStamp = args.Time
 Print_ACK_NAK  = args.ACK
+Dump_Status=args.Status
 
 if args.Explain:
     print(("Dump undecoded: {},  Dump Decoded: {},  Dump ACK/NACK: {}, Dump TimeStamp: {}".format(
@@ -168,7 +170,7 @@ while (new_data):
             if Dump_Undecoded :
                 print(("Undecoded Data: " +ByteToHex(dcol.undecoded)));
         elif result == Got_Packet :
-            dcol.dump(dump_undecoded=Dump_Undecoded,dump_decoded=Dump_Decoded,dump_timestamp=Dump_TimeStamp);
+            dcol.dump(dump_undecoded=Dump_Undecoded,dump_decoded=Dump_Decoded,dump_timestamp=Dump_TimeStamp,dump_status=Dump_Status);
             sys.stdout.flush()
         elif result == Got_Sub_Packet:
             if dcol.Dump_Levels[dcol.packet_ID] :
@@ -189,9 +191,9 @@ while (new_data):
         result = dcol.process_data ()
 #        print "processed: " + str(result)
     if Use_TCP:
-        new_data = Remote_TCP.recv(1)
+        new_data = Remote_TCP.recv(1000)
     else:
-        new_data = sys.stdin.buffer.read(1)
+        new_data = sys.stdin.buffer.read(1000)
 
 if Use_TCP:
     Remote_TCP.close()
